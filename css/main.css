@@ -142,6 +142,26 @@
   flex-wrap: wrap;
 }
 
+/* Mobile responsive adjustments for Hero banner */
+@media (max-width: 768px) {
+  .hero-content {
+    position: relative;
+    top: -75px;
+  }
+  
+  .hero h1 {
+    margin-bottom: 8px;
+  }
+  
+  .hero-slogan {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .scroll-down-arrow {
+    bottom: 95px;
+  }
+}
+
 /* ==========================================
    2. About Section Custom Stylings
    ========================================== */
