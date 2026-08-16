@@ -159,9 +159,14 @@
 
 /* Mobile responsive adjustments for Hero banner */
 @media (max-width: 768px) {
+  .hero {
+    align-items: flex-start;
+    padding-top: 12vh;
+  }
+
   .hero-content {
     position: relative;
-    top: -185px;
+    top: 0;
   }
   
   .hero h1 {
@@ -173,7 +178,7 @@
   }
   
   .scroll-down-arrow {
-    bottom: 170px;
+    bottom: 140px;
   }
 }
 
