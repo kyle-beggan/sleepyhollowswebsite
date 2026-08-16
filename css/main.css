@@ -9,6 +9,7 @@
    ========================================== */
 .hero {
   height: 100vh;
+  height: 100dvh;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -160,7 +161,7 @@
 @media (max-width: 768px) {
   .hero-content {
     position: relative;
-    top: -110px;
+    top: -185px;
   }
   
   .hero h1 {
