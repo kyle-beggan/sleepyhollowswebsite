@@ -161,7 +161,7 @@
 @media (max-width: 768px) {
   .hero {
     align-items: flex-start;
-    padding-top: 12vh;
+    padding-top: calc(12vh + 50px);
   }
 
   .hero-content {
