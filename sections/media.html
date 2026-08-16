@@ -1,0 +1,170 @@
+<section id="media">
+  <div class="container">
+    <h2 class="section-header uppercase">Media</h2>
+    <p class="lead mb-lg" style="max-width: 800px;">Explore photos, live sessions, and recordings completed right here
+      at Sleepy Hollows Studio.</p>
+
+    <div class="tabs-container">
+      <!-- Tabs Navigation -->
+      <div class="tabs-nav" style="margin-bottom: var(--space-md);">
+        <button class="tab-btn active" data-tab="tab-photos">Photo Gallery</button>
+        <button class="tab-btn" data-tab="tab-videos">Videos</button>
+        <button class="tab-btn" data-tab="tab-radio">Sleepy Radio</button>
+      </div>
+
+      <!-- Tab Content 1: Photo Gallery -->
+      <div class="tab-content active" id="tab-photos">
+        <!-- INSTAGRAM WIDGET EMBED -->
+        <!-- To display your live Instagram feed, paste your Elfsight or LightWidget embed code right here: -->
+        <div class="instagram-widget-container card-glass"
+          style="padding: 40px 20px; text-align: center; border-radius: var(--border-radius-lg); width: 100%;">
+          <i class="fa-brands fa-instagram"
+            style="font-size: 3.5rem; color: var(--color-accent); margin-bottom: 20px; display: block;"></i>
+          <h3 class="uppercase"
+            style="font-size: 1.3rem; margin-bottom: 12px; letter-spacing: 0.05em; color: var(--color-text-primary);">
+            Connect Live Instagram Feed</h3>
+          <p style="color: var(--color-text-secondary); max-width: 500px; margin: 0 auto 25px; line-height: 1.6;">
+            Static websites require a secure proxy/widget to fetch Instagram feeds dynamically without exposing
+            credentials. Connect your Instagram account via Elfsight or LightWidget and paste their free embed code
+            here.
+          </p>
+          <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <a href="https://elfsight.com/instagram-feed-widget/" target="_blank" rel="noopener noreferrer"
+              class="btn btn-primary btn-sm">
+              Get Elfsight Widget
+            </a>
+            <a href="https://lightwidget.com/" target="_blank" rel="noopener noreferrer"
+              class="btn btn-secondary btn-sm">
+              Get LightWidget
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Videos -->
+      <div class="tab-content" id="tab-videos">
+        <div class="grid grid-4 gap-md" id="youtube-gallery">
+          <!-- Pulsing sleepy hollows logo loader shown until content loads -->
+          <div class="youtube-loader" style="grid-column: 1 / -1; text-align: center; padding: 60px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+            <img src="assets/img/logo_white.png" alt="Loading..." class="loader-logo-img" style="width: 80px; height: 80px; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));">
+            <span style="color: var(--color-text-secondary); font-size: 0.9rem; letter-spacing: 0.05em; font-family: var(--font-display);">Loading Sessions...</span>
+          </div>
+        </div>
+        <div class="text-center mt-md" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+          <button class="btn btn-primary btn-sm" id="btn-load-more-videos">Load More Videos</button>
+          <a href="https://www.youtube.com/@HollowsSleepy" target="_blank" rel="noopener noreferrer"
+            class="btn btn-secondary btn-sm">
+            <i class="fa-brands fa-youtube"></i> Find Us On YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Sleepy Radio -->
+      <div class="tab-content" id="tab-radio">
+        <!-- Custom Glassmorphism Player -->
+        <div class="audio-player-container" style="display: grid;">
+          <!-- Player Visualizer (Left side on desktop) -->
+          <div class="player-visualizer">
+            <div class="album-art-wrap">
+              <img src="assets/img/logo_white.png" id="player-art" alt="Sleepy Hollows Logo"
+                style="object-fit: contain; padding: 25px;">
+            </div>
+            <div class="track-info">
+              <div class="track-info-title" id="player-title">Night Signals</div>
+              <div class="track-info-artist" id="player-artist">The Blackwoods</div>
+            </div>
+
+            <!-- Hidden Audio Element -->
+            <audio id="audio-element" src="assets/audio/live1.mp3" preload="metadata"></audio>
+
+            <!-- Controls -->
+            <div class="playback-controls">
+              <button class="btn-ctrl" id="btn-prev" aria-label="Previous Track">
+                <i class="fa-solid fa-backward-step"></i>
+              </button>
+              <button class="btn-ctrl btn-play" id="btn-play-pause" aria-label="Play or Pause Track">
+                <i class="fa-solid fa-play" id="play-icon"></i>
+              </button>
+              <button class="btn-ctrl" id="btn-next" aria-label="Next Track">
+                <i class="fa-solid fa-forward-step"></i>
+              </button>
+            </div>
+
+            <!-- Timeline -->
+            <div class="timeline-container">
+              <span id="time-current">0:00</span>
+              <div class="time-slider" id="timeline">
+                <div class="time-progress" id="time-progress"></div>
+                <div class="time-handle" id="time-handle"></div>
+              </div>
+              <span id="time-total">0:00</span>
+            </div>
+
+            <!-- Volume -->
+            <div class="volume-container">
+              <i class="fa-solid fa-volume-high" id="volume-icon"></i>
+              <div class="volume-slider" id="volume-control">
+                <div class="volume-progress" id="volume-progress"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Playlist List (Right side on desktop) -->
+          <div class="playlist-container">
+            <h3 class="uppercase mb-sm"
+              style="font-size: 1.1rem; letter-spacing: 0.1em; color: var(--color-text-secondary);">Recent Tracks
+            </h3>
+
+            <!-- Track Row 1 -->
+            <div class="playlist-track active" data-index="0" data-src="assets/audio/live1.mp3">
+              <div class="track-index">01</div>
+              <div class="track-meta">
+                <span class="track-title">Night Signals</span>
+                <span class="track-desc">The Blackwoods — Alternative Indie Rock</span>
+              </div>
+              <div class="track-actions">
+                <button class="btn-track-action btn-lyrics" data-lyrics="hope">Lyrics</button>
+                <a href="assets/audio/live1.mp3" download class="btn-track-action btn-download-track"><i
+                    class="fa-solid fa-arrow-down-long"></i></a>
+              </div>
+            </div>
+
+            <!-- Track Row 2 -->
+            <div class="playlist-track" data-index="1" data-src="assets/audio/live2.mp3">
+              <div class="track-index">02</div>
+              <div class="track-meta">
+                <span class="track-title">Golden Hollows</span>
+                <span class="track-desc">Sleepy Hollows Sessions — Acoustic Folk</span>
+              </div>
+              <div class="track-actions">
+                <button class="btn-track-action btn-lyrics" data-lyrics="golden">Lyrics</button>
+                <a href="assets/audio/live2.mp3" download class="btn-track-action btn-download-track"><i
+                    class="fa-solid fa-arrow-down-long"></i></a>
+              </div>
+            </div>
+
+            <!-- Track Row 3 -->
+            <div class="playlist-track" data-index="2" data-src="assets/audio/live3.mp3">
+              <div class="track-index">03</div>
+              <div class="track-meta">
+                <span class="track-title">Historic Heart</span>
+                <span class="track-desc">Herndon Roots — Modern Rock (Mastering Reel)</span>
+              </div>
+              <div class="track-actions">
+                <button class="btn-track-action btn-lyrics" data-lyrics="heart">Lyrics</button>
+                <a href="assets/audio/live3.mp3" download class="btn-track-action btn-download-track"><i
+                    class="fa-solid fa-arrow-down-long"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lyrics Container popup -->
+          <div class="lyrics-container" id="lyrics-box">
+            <h4 class="lyrics-title" id="lyrics-title">Lyrics</h4>
+            <p class="lyrics-text" id="lyrics-content">Lyrics will display here...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

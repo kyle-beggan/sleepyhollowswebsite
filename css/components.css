@@ -780,3 +780,369 @@ textarea.form-input {
   text-align: center;
   margin-top: var(--space-sm);
 }
+
+/* ==========================================
+   8. Media Gallery (Instagram & YouTube Grid)
+   ========================================== */
+/* Instagram Grid Cards */
+.instagram-card {
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--transition-normal), border-color var(--transition-normal);
+}
+
+.instagram-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 25px rgba(130, 36, 227, 0.2);
+}
+
+.instagram-image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  overflow: hidden;
+}
+
+.instagram-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.instagram-card:hover .instagram-img {
+  transform: scale(1.05);
+}
+
+.instagram-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(11, 12, 16, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  backdrop-filter: blur(4px);
+}
+
+.instagram-card:hover .instagram-overlay {
+  opacity: 1;
+}
+
+.instagram-overlay i {
+  font-size: 2rem;
+  color: var(--color-accent);
+}
+
+.instagram-overlay span {
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+}
+
+/* YouTube Video Cards */
+.video-card {
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--glass-border);
+  transition: border-color var(--transition-normal), transform var(--transition-normal);
+  animation: fadeIn var(--transition-normal);
+}
+
+.video-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-5px);
+}
+
+.video-embed-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.video-embed-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-info {
+  padding: var(--space-sm);
+}
+
+.video-title {
+  font-size: 0.95rem;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-primary);
+  letter-spacing: 0.05em;
+}
+
+.video-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
+
+
+/* ==========================================
+   9. About Section Studio Evolution Timeline
+   ========================================== */
+.timeline-slider-container {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+}
+
+.about-timeline-track-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto var(--space-lg);
+  padding: 20px 0;
+}
+
+.about-timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--glass-border);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.about-timeline-nodes {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.timeline-node-btn {
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--glass-border);
+  color: var(--color-text-secondary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.timeline-node-btn::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--color-text-secondary);
+  border-radius: 50%;
+  transition: all var(--transition-fast) ease;
+}
+
+.timeline-node-btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-primary);
+}
+
+.timeline-node-btn:hover::before {
+  background: var(--color-primary);
+  transform: translateX(-50%) scale(1.3);
+}
+
+.timeline-node-btn.active {
+  color: var(--color-text-primary);
+  border-color: var(--color-accent);
+  background: var(--color-primary);
+  box-shadow: 0 0 15px rgba(130, 36, 227, 0.4);
+}
+
+.timeline-node-btn.active::before {
+  background: var(--color-accent);
+  transform: translateX(-50%) scale(1.5);
+}
+
+/* Timeline Slides */
+.about-timeline-content-wrap {
+  min-height: 120px;
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.timeline-slide {
+  display: none;
+  animation: slideFadeIn 0.4s ease-out forwards;
+}
+
+.timeline-slide.active {
+  display: block;
+}
+
+.timeline-slide-title {
+  font-size: 1.15rem;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.05em;
+}
+
+.timeline-slide-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments for timeline nodes */
+@media (max-width: 768px) {
+  .about-timeline-nodes {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  .about-timeline-line {
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+  .timeline-node-btn::before {
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .timeline-node-btn:hover::before, .timeline-node-btn.active::before {
+    transform: translateY(-50%) scale(1.3);
+  }
+}
+
+/* ==========================================
+   10. Services Row Layout
+   ========================================== */
+.services-rows-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.service-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .service-row {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
+  }
+}
+
+.service-details-col {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.service-details-col .service-icon {
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 0;
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: rgba(130, 36, 227, 0.1);
+  border: 1px solid rgba(130, 36, 227, 0.2);
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-text h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-primary);
+  letter-spacing: 0.05em;
+}
+
+.service-text p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.service-rates-col {
+  border-top: 1px solid var(--glass-border);
+  padding-top: var(--space-md);
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .service-rates-col {
+    border-top: none;
+    border-left: 1px solid var(--glass-border);
+    padding-top: 0;
+    padding-left: var(--space-lg);
+  }
+}
+
+.service-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--space-sm);
+  grid-column: 1 / -1;
+}
+

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;900&family=Quantico:wght@400;700&display=swap"
     rel="stylesheet">
 
   <!-- FontAwesome Icons -->
@@ -328,7 +328,7 @@
   </style>
 </head>
 
-<body>
+<body id="home">
 
   <!-- Preloader Screen -->
   <div class="loader" id="preloader">
@@ -352,7 +352,7 @@
         <li><a href="../">Home</a></li>
         <li><a href="../#about">About</a></li>
         <li><a href="../#services">Services</a></li>
-        <li><a href="../#music">Media</a></li>
+        <li><a href="../#media">Media</a></li>
         <li><a href="../#gear">Gear</a></li>
         <li><a href="../#team">Team</a></li>
         <li><a href="../#contact">Contact</a></li>
@@ -683,25 +683,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-logo uppercase">Sleepy Hollows</div>
-      <p>"Where music makes family, and family makes music."</p>
-
-      <ul class="footer-socials">
-        <li><a href="#" aria-label="Spotify"><i class="fa-brands fa-spotify"></i></a></li>
-        <li><a href="#" aria-label="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a></li>
-        <li><a href="#" aria-label="Apple Music"><i class="fa-brands fa-apple"></i></a></li>
-        <li><a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a></li>
-        <li><a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
-        <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a></li>
-      </ul>
-
-      <div class="copyright">
-        <p>&copy; 2026 Sleepy Hollows Studio. All rights reserved. | <a href="#home">Back to Top</a></p>
-      </div>
-    </div>
-  </footer>
+  <div data-include="../sections/footer.html"></div>
 
   <!-- Scripts -->
   <script src="../js/main.js"></script>

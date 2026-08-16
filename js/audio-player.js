@@ -1,6 +1,6 @@
 /* Sleepy Hollows Custom Audio Player Script */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('sections-loaded', () => {
   // Track Data
   const playlist = [
     {
