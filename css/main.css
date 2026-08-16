@@ -96,7 +96,7 @@
 .hero-slogan {
   font-size: clamp(0.95rem, 1.6vw, 1.25rem);
   font-weight: 300;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   font-style: italic;
   margin-bottom: var(--space-md);
   max-width: 800px;
