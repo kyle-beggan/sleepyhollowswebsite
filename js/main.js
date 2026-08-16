@@ -1,16 +1,29 @@
 async function loadSections() {
   const includes = document.querySelectorAll('[data-include]');
+  
+  // Calculate correct base URL for relative fetches (handling subpaths and missing trailing slashes)
+  const loc = window.location;
+  let path = loc.pathname;
+  const lastSegment = path.substring(path.lastIndexOf('/') + 1);
+  if (path && !path.endsWith('/') && !lastSegment.includes('.')) {
+    path += '/';
+  } else {
+    path = path.substring(0, path.lastIndexOf('/') + 1);
+  }
+  const baseUrl = loc.origin + path;
+
   const promises = Array.from(includes).map(async (el) => {
-    const file = el.getAttribute('data-include');
+    const relativeFile = el.getAttribute('data-include');
+    const file = new URL(relativeFile, baseUrl).href;
     try {
       const response = await fetch(file);
       if (response.ok) {
         el.innerHTML = await response.text();
       } else {
-        el.innerHTML = `<div style="padding: 20px; color: var(--color-accent);">Error loading: ${file}</div>`;
+        el.innerHTML = `<div style="padding: 20px; color: var(--color-accent);">Error loading: ${relativeFile}</div>`;
       }
     } catch (err) {
-      el.innerHTML = `<div style="padding: 20px; color: var(--color-accent);">Connection error: ${file}</div>`;
+      el.innerHTML = `<div style="padding: 20px; color: var(--color-accent);">Connection error: ${relativeFile}</div>`;
     }
   });
   await Promise.all(promises);

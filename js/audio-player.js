@@ -1,6 +1,6 @@
 /* Sleepy Hollows Custom Audio Player Script */
 
-document.addEventListener('sections-loaded', () => {
+const initAudioPlayer = () => {
   // Track Data
   const playlist = [
     {
@@ -266,4 +266,10 @@ The music rings out, as the twilight falls.`
 
   // Set default first track
   loadTrack(0);
-});
+};
+
+if (document.getElementById('audio-element')) {
+  initAudioPlayer();
+} else {
+  document.addEventListener('sections-loaded', initAudioPlayer);
+}
