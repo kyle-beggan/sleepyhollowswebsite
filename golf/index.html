@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <title>Tournament Registration | Sleepy Hollows Invitational Golf</title>
+  <meta name="description"
+    content="Register for the Sleepy Hollows Invitational Golf Tournament benefiting Herndon Regional Youth Ensembles at Herndon Centennial Golf Course.">
+  <meta name="author" content="Sleepy Hollows Studio">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="../css/main.css">
+
+  <!-- Golf Specific Styles -->
+  <style>
+    /* Hero Subpage adjustments */
+    .hero-sub {
+      min-height: 50vh;
+      height: 60vh;
+    }
+
+    /* Golf specific layouts */
+    .golf-details-box {
+      margin-top: calc(-1 * var(--space-lg));
+      z-index: 10;
+      position: relative;
+    }
+
+    .event-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+
+    @media (min-width: 768px) {
+      .event-meta-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .meta-box {
+      text-align: center;
+      padding: var(--space-sm);
+      border-right: 1px solid var(--glass-border);
+    }
+
+    .meta-box:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 767px) {
+      .meta-box {
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: var(--space-sm);
+      }
+
+      .meta-box:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .meta-box i {
+      font-size: 2rem;
+      color: var(--color-accent);
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Ticket Selector Elements */
+    .ticket-selector-card {
+      margin-top: var(--space-lg);
+    }
+
+    .ticket-item-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--glass-border);
+      align-items: center;
+    }
+
+    .ticket-item-row:last-child {
+      border-bottom: none;
+    }
+
+    @media (min-width: 768px) {
+      .ticket-item-row {
+        grid-template-columns: 1fr 150px 120px;
+        gap: var(--space-md);
+      }
+    }
+
+    .ticket-info {
+      text-align: left;
+    }
+
+    .ticket-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .ticket-description {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+    }
+
+    .ticket-price-col {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--color-accent);
+      font-size: 1.25rem;
+      text-align: left;
+    }
+
+    @media (min-width: 768px) {
+      .ticket-price-col {
+        text-align: right;
+      }
+    }
+
+    .qty-input-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+    }
+
+    @media (min-width: 768px) {
+      .qty-input-wrap {
+        justify-content: flex-end;
+      }
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--glass-border);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--transition-fast);
+    }
+
+    .qty-btn:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .qty-val {
+      width: 40px;
+      height: 32px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-sm);
+      color: var(--color-text-primary);
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+
+    /* Registration/Checkout flow */
+    .checkout-flow-container {
+      display: none;
+      /* Shown dynamically */
+      animation: slideDown var(--transition-normal);
+      margin-top: var(--space-lg);
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      margin-top: var(--space-md);
+    }
+
+    @media (min-width: 992px) {
+      .checkout-grid {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cart-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-md);
+    }
+
+    .cart-summary-table th,
+    .cart-summary-table td {
+      padding: var(--space-xs) 0;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cart-summary-table th {
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .cart-total-row td {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      border-bottom: none;
+      padding-top: var(--space-sm);
+    }
+
+    /* Dynamic player details cards */
+    .players-form-section {
+      display: grid;
+      gap: var(--space-sm);
+    }
+
+    .player-entry-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-sm);
+      margin-bottom: var(--space-xs);
+    }
+
+    .player-entry-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+      border-bottom: 1px solid rgba(130, 36, 227, 0.2);
+      padding-bottom: 4px;
+    }
+
+    /* Receipt Overlay Styles */
+    .receipt-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(11, 12, 16, 0.95);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      overflow-y: auto;
+    }
+
+    .receipt-box {
+      width: 100%;
+      max-width: 600px;
+      background-color: var(--color-bg-secondary);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-md);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 1px dashed var(--glass-border);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .receipt-success-icon {
+      font-size: 3rem;
+      color: var(--color-accent);
+      margin-bottom: var(--space-xs);
+    }
+
+    .receipt-details-list {
+      margin: var(--space-md) 0;
+      font-size: 0.9rem;
+    }
+
+    .receipt-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-xs);
+    }
+
+    .receipt-line.total {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      border-top: 1px solid var(--glass-border);
+      padding-top: var(--space-xs);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Preloader Screen -->
+  <div class="loader" id="preloader">
+    <div class="loader-inner">
+      <img src="../assets/img/logo_white.png" alt="Sleepy Hollows Loading Logo" class="loader-logo-img">
+    </div>
+  </div>
+
+  <!-- Sticky Glassmorphic Header -->
+  <header class="header scrolled" id="header">
+    <div class="header-container">
+      <a href="../" class="logo">
+        <img src="../assets/img/logo_white.png" alt="Sleepy Hollows Studio Logo">
+      </a>
+      <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="main-menu" id="menu">
+        <li><a href="../">Home</a></li>
+        <li><a href="../#about">About</a></li>
+        <li><a href="../#services">Services</a></li>
+        <li><a href="../#music">Media</a></li>
+        <li><a href="../#gear">Gear</a></li>
+        <li><a href="../#team">Team</a></li>
+        <li><a href="../#contact">Contact</a></li>
+        <li><a href="#register" class="active">Tournament</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero hero-sub" id="home">
+    <div class="hero-bg-media">
+      <img src="../assets/img/golf_hero.png" alt="Herndon Centennial Golf Course Green">
+    </div>
+    <div class="hero-content">
+      <h1 class="uppercase" style="font-size: clamp(2rem, 4vw, 3rem);">Sleepy Hollows Invitational Tournament (The
+        S.H.I.T.)</h1>
+      <p class="hero-slogan mb-0">September 24, 2026 | Herndon Centennial Golf Course</p>
+    </div>
+  </section>
+
+  <!-- Event Details Overview -->
+  <section class="golf-details-box" style="padding-top: 0;">
+    <div class="container">
+      <div class="card-glass" style="margin-top: 0;">
+        <div class="event-meta-grid">
+          <div class="meta-box">
+            <i class="fa-solid fa-calendar-day"></i>
+            <h4 class="uppercase">Date & Time</h4>
+            <p class="mb-0">Thursday, September 24, 2026<br>9:00 AM Shotgun Start</p>
+          </div>
+          <div class="meta-box">
+            <i class="fa-solid fa-flag"></i>
+            <h4 class="uppercase">Venue</h4>
+            <p class="mb-0">Herndon Centennial Golf Course<br>Herndon, Virginia</p>
+          </div>
+          <div class="meta-box">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <h4 class="uppercase">Benefiting</h4>
+            <p class="mb-0">Herndon Regional Youth Ensembles<br>(501(c)(3) Donation Included)</p>
+          </div>
+        </div>
+
+        <h3 class="uppercase text-center mt-md" style="color: var(--color-text-primary);">Join Us for the Annual Sleepy
+          Hollows Invitational</h3>
+        <p class="text-center" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+          Dust off your clubs for a day of fairways, greens, and good company. The Sleepy Hollows Invitational brings
+          together our local community, musicians, and sponsors for a premier golf outing. Registration includes
+          <strong>greens fees, cart, range balls, box lunch, and non-alcoholic beverages</strong>. A significant portion
+          of each registration fee is donated directly to Herndon Regional Youth Ensembles to support youth music
+          programs in Northern Virginia.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Package Selector Section -->
+  <section id="register" style="padding-top: 2rem;">
+    <div class="container">
+      <h2 class="section-header text-center uppercase"
+        style="margin-left: auto; margin-right: auto; max-width: max-content; padding-bottom: 15px;">Choose Your
+        Registration</h2>
+
+      <div class="card-glass ticket-selector-card">
+        <h3 class="uppercase mb-md"
+          style="font-size: 1.1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: var(--space-xs);">
+          Available Packages</h3>
+
+        <!-- Ticket 1: Solo Artist -->
+        <div class="ticket-item-row" data-price="120.00" data-players="1" data-id="solo-artist">
+          <div class="ticket-info">
+            <div class="ticket-title">Solo Artist</div>
+            <div class="ticket-description">Includes Range Balls, Cart & Greens Fees, Box Lunch, and Non-Alcoholic
+              Beverages for a single player.</div>
+          </div>
+          <div class="ticket-price-col">$120.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 2: Quartet -->
+        <div class="ticket-item-row" data-price="400.00" data-players="4" data-id="quartet">
+          <div class="ticket-info">
+            <div class="ticket-title">Quartet (Foursome Team)</div>
+            <div class="ticket-description">Save $80! Complete registration for a Foursome team. Includes Range Balls,
+              Cart & Greens Fees, Box Lunch, and Beverages for 4 players.</div>
+          </div>
+          <div class="ticket-price-col">$400.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 3: Hole Sponsor -->
+        <div class="ticket-item-row" data-price="100.00" data-players="0" data-id="hole-sponsor">
+          <div class="ticket-info">
+            <div class="ticket-title">Hole Sponsor</div>
+            <div class="ticket-description">Sponsorship only (does not include golf entry). Custom signage featuring
+              your name or business logo displayed at the tee box of a tournament hole.</div>
+          </div>
+          <div class="ticket-price-col">$100.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 4: Longest Drive Sponsor -->
+        <div class="ticket-item-row" data-price="250.00" data-players="1" data-id="longest-drive">
+          <div class="ticket-info">
+            <div class="ticket-title">Longest Drive Sponsor</div>
+            <div class="ticket-description">Includes one Solo Artist registration to play and exclusive tournament
+              signage displayed on the Longest Drive contest fairway.</div>
+          </div>
+          <div class="ticket-price-col">$250.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 5: Closest to the Pin Sponsor -->
+        <div class="ticket-item-row" data-price="250.00" data-players="1" data-id="closest-to-pin">
+          <div class="ticket-info">
+            <div class="ticket-title">Closest to the Pin Sponsor</div>
+            <div class="ticket-description">Includes one Solo Artist registration to play and exclusive tournament
+              signage displayed on the Closest to the Pin contest green.</div>
+          </div>
+          <div class="ticket-price-col">$250.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 6: Gold Record Sponsor -->
+        <div class="ticket-item-row" data-price="500.00" data-players="2" data-id="gold-record">
+          <div class="ticket-info">
+            <div class="ticket-title">Gold Record Sponsor</div>
+            <div class="ticket-description">Includes two Solo Artist registrations, one tee box sign, and a $200
+              tax-deductible donation in your name to NoVA Youth Ensembles.</div>
+          </div>
+          <div class="ticket-price-col">$500.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 7: Platinum Record Sponsor -->
+        <div class="ticket-item-row" data-price="1000.00" data-players="4" data-id="platinum-record">
+          <div class="ticket-info">
+            <div class="ticket-title">Platinum Record Sponsor</div>
+            <div class="ticket-description">Includes one Quartet (Foursome) entry, one tee box sign, and a $400
+              tax-deductible donation in your name to NoVA Youth Ensembles.</div>
+          </div>
+          <div class="ticket-price-col">$1,000.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 8: Diamond Record Sponsor -->
+        <div class="ticket-item-row" data-price="2500.00" data-players="8" data-id="diamond-record">
+          <div class="ticket-info">
+            <div class="ticket-title">Diamond Record Sponsor (Presenting)</div>
+            <div class="ticket-description">Maximum recognition! Includes two Quartet (Foursome) entries, two tee box
+              signs, presenting logo on event banner, and a $1,250 tax-deductible donation.</div>
+          </div>
+          <div class="ticket-price-col">$2,500.00 <span
+              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly>
+            <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout & Registration Flow (Shown dynamically) -->
+  <section class="checkout-flow-container" id="checkout-flow">
+    <div class="container">
+      <div class="checkout-grid">
+
+        <!-- Registration Form & Player Info (Left Column) -->
+        <div class="card-glass">
+          <h3 class="uppercase mb-md"
+            style="font-size: 1.1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: var(--space-xs);">
+            Registration Details</h3>
+
+          <form id="registration-form">
+            <!-- Contact Info -->
+            <h4 class="uppercase mb-sm" style="font-size: 0.9rem; color: var(--color-text-secondary);">Primary Contact
+            </h4>
+            <div class="grid grid-2">
+              <div class="form-group">
+                <label class="form-label" for="reg-name">Full Name</label>
+                <input class="form-input" type="text" id="reg-name" name="contact_name" required placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="reg-email">Email Address</label>
+                <input class="form-input" type="email" id="reg-email" name="contact_email" required
+                  placeholder="john@example.com">
+              </div>
+            </div>
+            <div class="form-group mb-md">
+              <label class="form-label" for="reg-phone">Phone Number</label>
+              <input class="form-input" type="tel" id="reg-phone" name="contact_phone" required
+                placeholder="(571) 555-0199">
+            </div>
+
+            <!-- Dynamic Player Details generated here -->
+            <div id="players-wrapper" class="players-form-section"></div>
+
+            <!-- Secure Payment via PayPal -->
+            <h4 class="uppercase mt-md mb-sm"
+              style="font-size: 0.9rem; color: var(--color-text-secondary); border-top: 1px solid var(--glass-border); padding-top: var(--space-sm);">
+              Secure Checkout via PayPal</h4>
+            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: var(--space-md);">
+              Please fill in all primary contact and player details to unlock the PayPal checkout system.
+            </p>
+            <div id="paypal-button-container"></div>
+          </form>
+        </div>
+
+        <!-- Checkout Summary (Right Column) -->
+        <div>
+          <div class="card-glass" style="position: sticky; top: calc(var(--header-height) + 20px);">
+            <h3 class="uppercase mb-md"
+              style="font-size: 1.1rem; border-bottom: 1px solid var(--glass-border); padding-bottom: var(--space-xs);">
+              Order Summary</h3>
+
+            <table class="cart-summary-table">
+              <thead>
+                <tr>
+                  <th>Package</th>
+                  <th style="text-align: right;">Qty</th>
+                  <th style="text-align: right;">Price</th>
+                </tr>
+              </thead>
+              <tbody id="cart-items-body">
+                <!-- Populated dynamically -->
+              </tbody>
+              <tfoot>
+                <tr class="cart-total-row">
+                  <td>Total</td>
+                  <td colspan="2" style="text-align: right;" id="cart-total-val">$0.00</td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <p style="font-size: 0.8rem; line-height: 1.4; color: var(--color-text-muted);" class="mb-0">
+              <i class="fa-solid fa-shield-halved" style="margin-right: 4px; color: var(--color-accent);"></i> Secure
+              Transaction. Charges will appear on your statement as "Sleepy Hollows Studio". Registration confirmation
+              and receipt will be emailed immediately.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Printable Receipt Modal Overlay -->
+  <div class="receipt-overlay" id="receipt-modal">
+    <div class="receipt-box">
+      <div class="receipt-header">
+        <i class="fa-solid fa-circle-check receipt-success-icon"></i>
+        <h2 class="uppercase mb-sm" style="font-size: 1.5rem; color: var(--color-text-primary);">Registration Complete!
+        </h2>
+        <p class="mb-0">Thank you for registering for the Sleepy Hollows Golf Invitational.</p>
+        <p style="font-size: 0.85rem; color: var(--color-accent); font-weight: 600; margin-top: 5px;">RECEIPT ID: <span
+            id="receipt-id-val">#SH-GOLF-123456</span></p>
+      </div>
+
+      <div class="receipt-details-list">
+        <h4 class="uppercase" style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px;">Order
+          Details</h4>
+        <div id="receipt-items-list">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="receipt-line total">
+          <span>Amount Paid:</span>
+          <span id="receipt-total-val">$0.00</span>
+        </div>
+
+        <h4 class="uppercase mt-md"
+          style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px; border-top: 1px solid var(--glass-border); padding-top: var(--space-sm);">
+          Registered Players</h4>
+        <ol id="receipt-players-list"
+          style="padding-left: var(--space-sm); color: var(--color-text-primary); font-size: 0.9rem; line-height: 1.5;">
+          <!-- Populated dynamically -->
+        </ol>
+      </div>
+
+      <p style="font-size: 0.8rem; color: var(--color-text-secondary); text-align: center;" class="mb-md">
+        A confirmation email containing scheduling details, tournament rules, and directions has been sent to your
+        primary contact email.
+      </p>
+
+      <div class="hero-actions" style="margin-top: var(--space-md);">
+        <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"
+            style="margin-right: 8px;"></i>Print Receipt</button>
+        <button class="btn btn-secondary" id="btn-close-receipt">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-logo uppercase">Sleepy Hollows</div>
+      <p>"Where music makes family, and family makes music."</p>
+
+      <ul class="footer-socials">
+        <li><a href="#" aria-label="Spotify"><i class="fa-brands fa-spotify"></i></a></li>
+        <li><a href="#" aria-label="SoundCloud"><i class="fa-brands fa-soundcloud"></i></a></li>
+        <li><a href="#" aria-label="Apple Music"><i class="fa-brands fa-apple"></i></a></li>
+        <li><a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+        <li><a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+        <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a></li>
+      </ul>
+
+      <div class="copyright">
+        <p>&copy; 2026 Sleepy Hollows Studio. All rights reserved. | <a href="#home">Back to Top</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/main.js"></script>
+  <!-- Supabase Client JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Environment Configuration -->
+  <script src="config.js"></script>
+  <script src="golf.js"></script>
+</body>
+
+</html>

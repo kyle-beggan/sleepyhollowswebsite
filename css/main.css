@@ -1,0 +1,294 @@
+/* Sleepy Hollows Studio Main stylesheet bundling components and applying section styles */
+
+@import url('variables.css');
+@import url('base.css');
+@import url('components.css');
+
+/* ==========================================
+   1. Hero Header Banner
+   ========================================== */
+.hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-primary);
+}
+
+.hero-bg-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-bg-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-bg-media iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* 16:9 aspect ratio */
+  min-height: 100vh;
+  min-width: 177.77vh; /* 16:9 aspect ratio */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border: none;
+  z-index: 1;
+}
+
+.hero-bg-media::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 12, 16, 0.4) 0%,
+    rgba(11, 12, 16, 0.7) 60%,
+    var(--color-bg-primary) 100%
+  );
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 var(--space-md);
+  margin-top: calc(var(--header-height) * 0.5);
+  animation: heroReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero h1 {
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-primary);
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.hero-slogan {
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-bottom: var(--space-md);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ==========================================
+   2. About Section Custom Stylings
+   ========================================== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .about-grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.about-visual {
+  position: relative;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.about-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.about-visual::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(130, 36, 227, 0) 60%, rgba(11, 12, 16, 0.8) 100%);
+  pointer-events: none;
+}
+
+.about-visual:hover img {
+  transform: scale(1.03);
+}
+
+.philosophy-callout {
+  border-left: 4px solid var(--color-accent);
+  padding-left: var(--space-sm);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.philosophy-text {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  font-style: italic;
+}
+
+/* ==========================================
+   3. Services Rates Table / List
+   ========================================== */
+.rate-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.rate-item:last-child {
+  border-bottom: none;
+}
+
+.rate-name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.rate-price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-accent);
+  font-size: 1.1rem;
+}
+
+/* ==========================================
+   4. Contact Page Grid & Map
+   ========================================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.contact-info-list {
+  display: grid;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.contact-info-item {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.contact-info-icon {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+
+.contact-map-container {
+  width: 100%;
+  height: 250px;
+  border-radius: var(--border-radius-lg);
+  border: var(--border-width) solid var(--glass-border);
+  overflow: hidden;
+  margin-top: var(--space-md);
+}
+
+.contact-map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  filter: grayscale(1) invert(0.9) contrast(1.2); /* Custom dark theme styled map */
+}
+
+/* ==========================================
+   5. Footer
+   ========================================== */
+.footer {
+  background-color: #06070a;
+  border-top: 1px solid var(--glass-border);
+  padding: var(--space-lg) 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-socials {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin: var(--space-md) 0;
+}
+
+.footer-socials a {
+  color: var(--color-text-secondary);
+  font-size: 1.2rem;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-socials a:hover {
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.copyright {
+  margin-top: var(--space-md);
+}
