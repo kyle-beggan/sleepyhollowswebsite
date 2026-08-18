@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="../css/main.css?v=1.0.14">
+  <link rel="stylesheet" href="../css/main.css?v=1.0.15">
 
   <!-- Golf Specific Styles -->
   <style>
@@ -255,6 +255,18 @@
       margin-bottom: var(--space-xs);
     }
 
+    .availability-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-primary);
+    }
+
     .player-entry-title {
       font-family: var(--font-display);
       font-size: 0.9rem;
@@ -430,8 +442,10 @@
             <div class="ticket-description">Includes Range Balls, Cart & Greens Fees, Box Lunch, and Non-Alcoholic
               Beverages for a single player.</div>
           </div>
-          <div class="ticket-price-col">$125.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $125.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge">Unlimited</span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -446,8 +460,10 @@
             <div class="ticket-description">Save $80! Complete registration for a Foursome team. Includes Range Balls,
               Cart & Greens Fees, Box Lunch, and Beverages for 4 players.</div>
           </div>
-          <div class="ticket-price-col">$420.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $420.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge">Unlimited</span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -458,12 +474,14 @@
         <!-- Ticket 3: Hole Sponsor -->
         <div class="ticket-item-row" data-price="100.00" data-players="0" data-id="hole-sponsor" data-holes="1">
           <div class="ticket-info">
-            <div class="ticket-title">Hole Sponsor <span class="availability-badge" id="badge-hole-sponsor" style="display:none;"></span></div>
+            <div class="ticket-title">Hole Sponsor</div>
             <div class="ticket-description">Sponsorship only (does not include golf entry). Custom signage featuring
               your name or business logo displayed at the tee box of a tournament hole.</div>
           </div>
-          <div class="ticket-price-col">$100.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $100.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge" id="badge-hole-sponsor" style="display:none;"></span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -474,12 +492,14 @@
         <!-- Ticket 4: Longest Drive Sponsor -->
         <div class="ticket-item-row" data-price="250.00" data-players="1" data-id="longest-drive" data-holes="1">
           <div class="ticket-info">
-            <div class="ticket-title">Longest Drive Sponsor <span class="availability-badge" id="badge-longest-drive" style="display:none;"></span></div>
+            <div class="ticket-title">Longest Drive Sponsor</div>
             <div class="ticket-description">Includes one Solo Artist registration to play and exclusive tournament
               signage displayed on the Longest Drive contest fairway.</div>
           </div>
-          <div class="ticket-price-col">$250.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $250.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge" id="badge-longest-drive" style="display:none;"></span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -490,12 +510,14 @@
         <!-- Ticket 5: Closest to the Pin Sponsor -->
         <div class="ticket-item-row" data-price="250.00" data-players="1" data-id="closest-to-pin" data-holes="1">
           <div class="ticket-info">
-            <div class="ticket-title">Closest to the Pin Sponsor <span class="availability-badge" id="badge-closest-to-pin" style="display:none;"></span></div>
+            <div class="ticket-title">Closest to the Pin Sponsor</div>
             <div class="ticket-description">Includes one Solo Artist registration to play and exclusive tournament
               signage displayed on the Closest to the Pin contest green.</div>
           </div>
-          <div class="ticket-price-col">$250.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $250.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge" id="badge-closest-to-pin" style="display:none;"></span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -506,12 +528,14 @@
         <!-- Ticket 6: Gold Record Sponsor -->
         <div class="ticket-item-row" data-price="500.00" data-players="2" data-id="gold-record" data-holes="1">
           <div class="ticket-info">
-            <div class="ticket-title">Gold Record Sponsor <span class="availability-badge" id="badge-gold-record" style="display:none;"></span></div>
+            <div class="ticket-title">Gold Record Sponsor</div>
             <div class="ticket-description">Includes two Solo Artist registrations, one tee box sign, and a $200
               tax-deductible donation in your name to NoVA Youth Ensembles.</div>
           </div>
-          <div class="ticket-price-col">$500.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $500.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge" id="badge-gold-record" style="display:none;"></span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -522,12 +546,14 @@
         <!-- Ticket 7: Platinum Record Sponsor -->
         <div class="ticket-item-row" data-price="1000.00" data-players="4" data-id="platinum-record" data-holes="1">
           <div class="ticket-info">
-            <div class="ticket-title">Platinum Record Sponsor <span class="availability-badge" id="badge-platinum-record" style="display:none;"></span></div>
+            <div class="ticket-title">Platinum Record Sponsor</div>
             <div class="ticket-description">Includes one Quartet (Foursome) entry, one tee box sign, and a $400
               tax-deductible donation in your name to NoVA Youth Ensembles.</div>
           </div>
-          <div class="ticket-price-col">$1,000.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $1,000.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge" id="badge-platinum-record" style="display:none;"></span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -538,12 +564,14 @@
         <!-- Ticket 8: Diamond Record Sponsor -->
         <div class="ticket-item-row" data-price="2500.00" data-players="8" data-id="diamond-record" data-holes="2">
           <div class="ticket-info">
-            <div class="ticket-title">Diamond Record Sponsor <span class="availability-badge" id="badge-diamond-record" style="display:none;"></span> (Presenting)</div>
+            <div class="ticket-title">Diamond Record Sponsor (Presenting)</div>
             <div class="ticket-description">Maximum recognition! Includes two Quartet (Foursome) entries, two tee box
               signs, presenting logo on event banner, and a $1,250 tax-deductible donation.</div>
           </div>
-          <div class="ticket-price-col">$2,500.00 <span
-              style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span></div>
+          <div class="ticket-price-col">
+            $2,500.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span><br>
+            <span class="availability-badge" id="badge-diamond-record" style="display:none;"></span>
+          </div>
           <div class="qty-input-wrap">
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
@@ -707,12 +735,12 @@
   <div data-include="../sections/footer.html"></div>
 
   <!-- Scripts -->
-  <script src="../js/main.js?v=1.0.14"></script>
+  <script src="../js/main.js?v=1.0.15"></script>
   <!-- Supabase Client JS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Environment Configuration -->
-  <script src="config.js?v=1.0.14"></script>
-  <script src="golf.js?v=1.0.14"></script>
+  <script src="config.js?v=1.0.15"></script>
+  <script src="golf.js?v=1.0.15"></script>
 </body>
 
 </html>
