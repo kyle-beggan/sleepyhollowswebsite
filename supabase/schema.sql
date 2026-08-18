@@ -75,3 +75,10 @@ ON public.golf_players
 FOR SELECT 
 TO authenticated 
 USING (true);
+
+-- Create Public View for "Who's In" to protect emails
+CREATE OR REPLACE VIEW public.public_golf_players AS
+SELECT full_name, handicap, created_at FROM public.golf_players;
+
+GRANT SELECT ON public.public_golf_players TO anon;
+GRANT SELECT ON public.public_golf_players TO authenticated;

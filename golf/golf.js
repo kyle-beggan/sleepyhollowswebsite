@@ -478,4 +478,41 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPayPalButtons(); // Reset button callbacks
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+
+  // Load "Who's In" Players
+  async function loadWhosIn() {
+    if (!supabase) return;
+    try {
+      const { data: players, error } = await supabase
+        .from('public_golf_players')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+
+      const whosInContainer = document.getElementById("whos-in");
+      const listContainer = document.getElementById("whos-in-list");
+
+      if (players && players.length > 0) {
+        whosInContainer.style.display = 'block';
+        listContainer.innerHTML = '';
+        players.forEach(player => {
+          const card = document.createElement("div");
+          card.className = "meta-box";
+          card.style.padding = "15px";
+          card.innerHTML = `
+            <i class="fa-solid fa-user" style="font-size: 1.5rem; color: var(--color-accent); margin-bottom: 8px;"></i>
+            <h4 class="uppercase" style="margin-bottom: 4px; font-size: 0.95rem;">${player.full_name}</h4>
+            <p style="margin-bottom: 0; font-size: 0.8rem; color: var(--color-text-secondary);">Handicap: ${player.handicap}</p>
+          `;
+          listContainer.appendChild(card);
+        });
+      }
+    } catch (err) {
+      console.error("Error loading players for Who's In section:", err);
+    }
+  }
+
+  // Initial Data Load
+  loadWhosIn();
 });
