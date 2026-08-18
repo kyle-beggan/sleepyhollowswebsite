@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartTotalVal = document.getElementById("cart-total-val");
   const playersWrapper = document.getElementById("players-wrapper");
   const regForm = document.getElementById("registration-form");
-  
+
   // Modal Elements
   const receiptModal = document.getElementById("receipt-modal");
   const receiptIdVal = document.getElementById("receipt-id-val");
@@ -39,10 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize Supabase Client
   let supabase = null;
-  const isSupabaseConfigured = supabaseUrl && 
-                               supabaseUrl !== "YOUR_SUPABASE_PROJECT_URL" && 
-                               supabaseAnonKey && 
-                               supabaseAnonKey !== "YOUR_SUPABASE_ANON_KEY";
+  const isSupabaseConfigured = supabaseUrl &&
+    supabaseUrl !== "YOUR_SUPABASE_PROJECT_URL" &&
+    supabaseAnonKey &&
+    supabaseAnonKey !== "YOUR_SUPABASE_ANON_KEY";
 
   if (isSupabaseConfigured) {
     try {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPayPal(paypalClientId);
   function initPayPal(clientId) {
     if (paypalLoaded) return;
-    
+
     const script = document.createElement("script");
     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
     script.onload = () => {
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.paypal.Buttons({
       fundingSource: window.paypal.FUNDING.PAYPAL,
-      onInit: function(data, actions) {
+      onInit: function (data, actions) {
         // Disable by default until form validation succeeds
         actions.disable();
 
@@ -98,13 +98,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener("playerFormUpdated", validateForm);
       },
 
-      onClick: function() {
+      onClick: function () {
         if (!regForm.checkValidity()) {
           regForm.reportValidity();
         }
       },
 
-      createOrder: function(data, actions) {
+      createOrder: function (data, actions) {
         let total = 0;
         Object.keys(cart).forEach(id => {
           total += cart[id].qty * cart[id].price;
@@ -120,13 +120,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       },
 
-      onApprove: async function(data, actions) {
-        container.innerHTML = `
+      onApprove: async function (data, actions) {
+        container.style.display = 'none';
+        const statusDiv = document.createElement('div');
+        statusDiv.id = 'paypal-processing-status';
+        statusDiv.innerHTML = `
           <div style="text-align: center; color: var(--color-accent); font-weight: 600; padding: var(--space-sm) 0;">
             <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i>
             Finalizing registration and database records...
           </div>
         `;
+        container.parentNode.insertBefore(statusDiv, container);
 
         try {
           const details = await actions.order.capture();
@@ -140,15 +144,23 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Mocking database log. Reference ID:", transactionId);
           }
 
+          if (document.getElementById('paypal-processing-status')) {
+            document.getElementById('paypal-processing-status').remove();
+          }
+          container.style.display = 'block';
           // Show printable receipt modal
           showReceipt(registrationReference, details);
         } catch (error) {
+          if (document.getElementById('paypal-processing-status')) {
+            document.getElementById('paypal-processing-status').remove();
+          }
+          container.style.display = 'block';
           console.error("Checkout transaction or DB storage failed:", error);
           container.innerHTML = `
             <div style="text-align: center; color: #ff4757; padding: var(--space-md); border: 1px solid rgba(255, 71, 87, 0.5); border-radius: var(--border-radius-sm); margin-bottom: var(--space-md); background: rgba(255, 71, 87, 0.1);">
               <i class="fa-solid fa-triangle-exclamation" style="margin-bottom: 8px; font-size: 1.5rem;"></i><br>
               <strong>Error:</strong> ${error.message || "Transaction or DB storage failed."}<br>
-              <p style="font-size: 0.85rem; margin-top: 5px; color: var(--color-text-secondary);">If payment succeeded but registration failed, contact the studio at (571) 555-0199.</p>
+              <p style="font-size: 0.85rem; margin-top: 5px; color: var(--color-text-secondary);">If payment succeeded but registration failed, contact the studio at (703) 887-6509.</p>
               <button class="btn btn-secondary btn-sm" id="btn-retry-paypal" style="margin-top: 10px;">Retry</button>
             </div>
           `;
@@ -159,7 +171,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       },
 
-      onError: function(err) {
+      onError: function (err) {
+        if (document.getElementById('paypal-processing-status')) {
+          document.getElementById('paypal-processing-status').remove();
+        }
+        container.style.display = 'block';
         console.error("PayPal Button error execution:", err);
         container.innerHTML = `
           <div style="text-align: center; color: #ff4757; padding: var(--space-md); border: 1px solid rgba(255, 71, 87, 0.5); border-radius: var(--border-radius-sm); margin-bottom: var(--space-md); background: rgba(255, 71, 87, 0.1);">
@@ -258,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const price = parseFloat(row.getAttribute("data-price"));
     const maxPlayersPerTicket = parseInt(row.getAttribute("data-players"));
     const title = row.querySelector(".ticket-title").textContent;
-    
+
     const qtyValInput = row.querySelector(".qty-val");
     const decBtn = row.querySelector(".dec-qty");
     const incBtn = row.querySelector(".inc-qty");
@@ -279,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     incBtn.addEventListener("click", () => {
-      if (cart[id].qty < 10) { 
+      if (cart[id].qty < 10) {
         cart[id].qty++;
         qtyValInput.value = cart[id].qty;
         updateCheckoutFlow();
@@ -291,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let total = 0;
     let totalQty = 0;
     let totalPlayers = 0;
-    
+
     cartItemsBody.innerHTML = "";
 
     Object.keys(cart).forEach(id => {
@@ -306,13 +322,13 @@ document.addEventListener("DOMContentLoaded", () => {
         tr.innerHTML = `
           <td>${item.title}</td>
           <td style="text-align: right;">${item.qty}</td>
-          <td style="text-align: right;">$${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+          <td style="text-align: right;">$${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         `;
         cartItemsBody.appendChild(tr);
       }
     });
 
-    cartTotalVal.textContent = `$${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    cartTotalVal.textContent = `$${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     if (totalQty > 0) {
       checkoutFlow.style.display = "block";
@@ -336,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const nameInput = card.querySelector(`input[name="player_${index + 1}_name"]`);
       const emailInput = card.querySelector(`input[name="player_${index + 1}_email"]`);
       const handicapInput = card.querySelector(`select[name="player_${index + 1}_handicap"]`);
-      
+
       existingPlayersData.push({
         name: nameInput ? nameInput.value : "",
         email: emailInput ? emailInput.value : "",
@@ -397,13 +413,13 @@ document.addEventListener("DOMContentLoaded", () => {
         div.className = "receipt-line";
         div.innerHTML = `
           <span>${item.title} (x${item.qty})</span>
-          <span>$${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+          <span>$${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
         `;
         receiptItemsList.appendChild(div);
       }
     });
 
-    receiptTotalVal.textContent = `$${totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    receiptTotalVal.textContent = `$${totalPaid.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     receiptPlayersList.innerHTML = "";
     const playerInputs = playersWrapper.querySelectorAll(".player-entry-card");
@@ -429,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
   btnCloseReceipt.addEventListener("click", () => {
     receiptModal.style.display = "none";
     document.body.style.overflow = "";
-    
+
     regForm.reset();
 
     Object.keys(cart).forEach(id => {
