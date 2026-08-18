@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <div class="form-group mb-0">
             <label class="form-label" style="font-size: 0.75rem;">Email Address</label>
-            <input class="form-input" type="email" name="player_${i + 1}_email" required value="${existing.email}" placeholder="player${i + 1}@example.com">
+            <input class="form-input" type="email" name="player_${i + 1}_email" value="${existing.email}" placeholder="player${i + 1}@example.com">
           </div>
           <div class="form-group mb-0">
             <label class="form-label" style="font-size: 0.75rem;">Handicap</label>

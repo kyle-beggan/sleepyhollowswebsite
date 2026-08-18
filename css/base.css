@@ -93,7 +93,7 @@ p.lead {
   color: var(--color-text-primary);
 }
 
-a {
+a, a:visited {
   color: #ffffff;
   font-weight: bold;
   text-decoration: none;
