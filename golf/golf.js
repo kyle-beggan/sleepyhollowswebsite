@@ -30,7 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Keep track of quantities
   const cart = {};
-  let totalAvailableHoles = 18; // Default, will be updated from DB
+  let inventory = {
+    general_holes_remaining: 16,
+    longest_drive_remaining: 1,
+    closest_to_pin_remaining: 1
+  }; // Default, will be updated from DB
 
   // Retrieve configurations from environment
   const config = window.ENV || {};
@@ -316,9 +320,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     incBtn.addEventListener("click", () => {
       const holesRequired = cart[id].holesRequired;
-      const localRemaining = calculateLocalRemainingHoles();
+      const localInventory = calculateLocalRemainingInventory();
       
-      if (holesRequired > 0 && localRemaining < holesRequired) {
+      let locRemaining = 0;
+      if (id === 'longest-drive') {
+        locRemaining = localInventory.longest_drive_remaining;
+      } else if (id === 'closest-to-pin') {
+        locRemaining = localInventory.closest_to_pin_remaining;
+      } else {
+        locRemaining = localInventory.general_holes_remaining;
+      }
+      
+      if (holesRequired > 0 && locRemaining < holesRequired) {
         // Prevent increment if not enough holes left
         return;
       }
@@ -331,12 +344,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  function calculateLocalRemainingHoles() {
-    let holesInCart = 0;
+  function calculateLocalRemainingInventory() {
+    let localInventory = { ...inventory };
+    
     Object.keys(cart).forEach(id => {
-      holesInCart += (cart[id].qty * cart[id].holesRequired);
+      const qty = cart[id].qty;
+      if (id === 'longest-drive') {
+        localInventory.longest_drive_remaining -= qty;
+      } else if (id === 'closest-to-pin') {
+        localInventory.closest_to_pin_remaining -= qty;
+      } else if (cart[id].holesRequired > 0) {
+        localInventory.general_holes_remaining -= (qty * cart[id].holesRequired);
+      }
     });
-    return totalAvailableHoles - holesInCart;
+    
+    return localInventory;
   }
 
   function updateCheckoutFlow() {
@@ -344,7 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalQty = 0;
     let totalPlayers = 0;
 
-    const localRemaining = calculateLocalRemainingHoles();
+    const localInventory = calculateLocalRemainingInventory();
 
     // Update availability badges and button states
     Object.keys(cart).forEach(id => {
@@ -353,19 +375,36 @@ document.addEventListener("DOMContentLoaded", () => {
       const badge = document.getElementById(`badge-${id}`);
 
       if (item.holesRequired > 0) {
+        let globalRemaining = 0;
+        let locRemaining = 0;
+        
+        if (id === 'longest-drive') {
+          globalRemaining = inventory.longest_drive_remaining;
+          locRemaining = localInventory.longest_drive_remaining;
+        } else if (id === 'closest-to-pin') {
+          globalRemaining = inventory.closest_to_pin_remaining;
+          locRemaining = localInventory.closest_to_pin_remaining;
+        } else {
+          globalRemaining = inventory.general_holes_remaining;
+          locRemaining = localInventory.general_holes_remaining;
+        }
+
         if (badge) {
           badge.style.display = 'inline-block';
-          if (totalAvailableHoles < item.holesRequired) {
+          
+          let packagesAvailable = Math.floor(globalRemaining / item.holesRequired);
+          
+          if (packagesAvailable <= 0) {
              badge.textContent = 'Sold Out';
              badge.className = 'availability-badge sold-out';
           } else {
-             badge.textContent = `${totalAvailableHoles} Remaining`;
+             badge.textContent = `${packagesAvailable} Remaining`;
              badge.className = 'availability-badge';
           }
         }
 
         // Disable increment if we don't have enough holes locally
-        if (localRemaining < item.holesRequired || totalAvailableHoles < item.holesRequired) {
+        if (locRemaining < item.holesRequired || globalRemaining < item.holesRequired) {
           incBtn.disabled = true;
           incBtn.style.opacity = '0.5';
           incBtn.style.cursor = 'not-allowed';
@@ -592,22 +631,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Fetch available holes from DB
-  async function fetchAvailableHoles() {
+  // Fetch inventory status from DB
+  async function fetchInventoryStatus() {
     if (!supabase) return;
     try {
-      const { data, error } = await supabase.rpc('get_available_holes');
+      const { data, error } = await supabase.rpc('get_inventory_status');
       if (error) throw error;
       if (data !== null) {
-        totalAvailableHoles = data;
+        inventory = data;
         updateCheckoutFlow();
       }
     } catch (err) {
-      console.error("Error fetching available holes:", err);
+      console.error("Error fetching inventory status:", err);
     }
   }
 
   // Initial Data Load
   loadWhosIn();
-  fetchAvailableHoles();
+  fetchInventoryStatus();
 });

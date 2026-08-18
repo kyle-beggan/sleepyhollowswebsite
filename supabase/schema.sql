@@ -83,24 +83,41 @@ SELECT full_name, handicap, created_at FROM public.golf_players;
 GRANT SELECT ON public.public_golf_players TO anon;
 GRANT SELECT ON public.public_golf_players TO authenticated;
 
--- Function to securely calculate available holes based on registered items
-CREATE OR REPLACE FUNCTION public.get_available_holes()
-RETURNS integer AS $$
+-- Function to securely calculate available inventory for sponsorships
+CREATE OR REPLACE FUNCTION public.get_inventory_status()
+RETURNS json AS $$
 DECLARE
-  used_holes integer;
+  used_general_holes integer;
+  used_longest_drive integer;
+  used_closest_to_pin integer;
 BEGIN
+  -- General holes
   SELECT COALESCE(SUM(
     CASE 
       WHEN package_id = 'diamond-record' THEN quantity * 2
-      WHEN package_id IN ('hole-sponsor', 'gold-record', 'platinum-record', 'longest-drive', 'closest-to-pin') THEN quantity * 1
+      WHEN package_id IN ('hole-sponsor', 'gold-record', 'platinum-record') THEN quantity * 1
       ELSE 0
     END
-  ), 0) INTO used_holes
+  ), 0) INTO used_general_holes
   FROM public.golf_registration_items;
+
+  -- Longest Drive
+  SELECT COALESCE(SUM(quantity), 0) INTO used_longest_drive
+  FROM public.golf_registration_items
+  WHERE package_id = 'longest-drive';
+
+  -- Closest to Pin
+  SELECT COALESCE(SUM(quantity), 0) INTO used_closest_to_pin
+  FROM public.golf_registration_items
+  WHERE package_id = 'closest-to-pin';
   
-  RETURN 18 - used_holes;
+  RETURN json_build_object(
+    'general_holes_remaining', 16 - used_general_holes,
+    'longest_drive_remaining', 1 - used_longest_drive,
+    'closest_to_pin_remaining', 1 - used_closest_to_pin
+  );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-GRANT EXECUTE ON FUNCTION public.get_available_holes TO anon;
-GRANT EXECUTE ON FUNCTION public.get_available_holes TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_inventory_status TO anon;
+GRANT EXECUTE ON FUNCTION public.get_inventory_status TO authenticated;
