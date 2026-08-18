@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="../css/main.css?v=1.0.12">
+  <link rel="stylesheet" href="../css/main.css?v=1.0.13">
 
   <!-- Golf Specific Styles -->
   <style>
@@ -641,12 +641,16 @@
 
   <!-- Who's In Section -->
   <section id="whos-in" style="padding-top: 2rem; padding-bottom: 4rem; display: none;">
-    <div class="container">
+    <div class="container" style="max-width: 600px;">
       <h2 class="section-header text-center uppercase"
-        style="margin-left: auto; margin-right: auto; max-width: max-content; padding-bottom: 15px;">Who's In</h2>
-      <div class="card-glass ticket-selector-card" style="margin-top: 0;">
-        <p class="text-center mb-md">Check out who has already registered for the tournament!</p>
-        <div id="whos-in-list" class="event-meta-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        style="margin-left: auto; margin-right: auto; max-width: max-content; padding-bottom: 15px;">Who's In (<span id="whos-in-total">0</span>)</h2>
+      <div class="card-glass ticket-selector-card" style="margin-top: 0; padding: var(--space-md);">
+        <div style="text-align: center; margin-bottom: 15px;">
+          <button class="btn btn-secondary btn-sm" id="btn-toggle-whos-in">
+            <i class="fa-solid fa-chevron-down" style="margin-right: 6px;"></i> Show Players
+          </button>
+        </div>
+        <div id="whos-in-list" style="display: none; flex-direction: column; gap: 10px;">
           <!-- Populated dynamically -->
         </div>
       </div>
@@ -703,12 +707,12 @@
   <div data-include="../sections/footer.html"></div>
 
   <!-- Scripts -->
-  <script src="../js/main.js?v=1.0.12"></script>
+  <script src="../js/main.js?v=1.0.13"></script>
   <!-- Supabase Client JS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Environment Configuration -->
-  <script src="config.js?v=1.0.12"></script>
-  <script src="golf.js?v=1.0.12"></script>
+  <script src="config.js?v=1.0.13"></script>
+  <script src="golf.js?v=1.0.13"></script>
 </body>
 
 </html>

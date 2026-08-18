@@ -492,20 +492,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const whosInContainer = document.getElementById("whos-in");
       const listContainer = document.getElementById("whos-in-list");
+      const totalSpan = document.getElementById("whos-in-total");
+      const toggleBtn = document.getElementById("btn-toggle-whos-in");
 
       if (players && players.length > 0) {
         whosInContainer.style.display = 'block';
+        totalSpan.textContent = players.length;
         listContainer.innerHTML = '';
         players.forEach(player => {
-          const card = document.createElement("div");
-          card.className = "meta-box";
-          card.style.padding = "15px";
-          card.innerHTML = `
-            <i class="fa-solid fa-user" style="font-size: 1.5rem; color: var(--color-accent); margin-bottom: 8px;"></i>
-            <h4 class="uppercase" style="margin-bottom: 4px; font-size: 0.95rem;">${player.full_name}</h4>
-            <p style="margin-bottom: 0; font-size: 0.8rem; color: var(--color-text-secondary);">Handicap: ${player.handicap}</p>
+          const row = document.createElement("div");
+          row.style.display = "flex";
+          row.style.alignItems = "center";
+          row.style.justifyContent = "space-between";
+          row.style.padding = "10px 15px";
+          row.style.background = "rgba(255,255,255,0.03)";
+          row.style.borderRadius = "var(--border-radius-sm)";
+          row.style.border = "1px solid var(--glass-border)";
+          
+          row.innerHTML = `
+            <div style="display: flex; alignItems: center; gap: 15px;">
+              <i class="fa-solid fa-user" style="font-size: 1.2rem; color: var(--color-accent);"></i>
+              <span style="font-weight: 600; color: var(--color-text-primary); font-size: 0.95rem;">${player.full_name}</span>
+            </div>
+            <span style="font-size: 0.85rem; color: var(--color-text-secondary); background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 4px;">Handicap: ${player.handicap}</span>
           `;
-          listContainer.appendChild(card);
+          listContainer.appendChild(row);
+        });
+
+        toggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (listContainer.style.display === 'none') {
+            listContainer.style.display = 'flex';
+            toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up" style="margin-right: 6px;"></i> Hide Players';
+          } else {
+            listContainer.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down" style="margin-right: 6px;"></i> Show Players';
+          }
         });
       }
     } catch (err) {
