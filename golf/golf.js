@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Keep track of quantities
   const cart = {};
+  let totalAvailableHoles = 18; // Default, will be updated from DB
 
   // Retrieve configurations from environment
   const config = window.ENV || {};
@@ -301,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title: title,
       price: price,
       playersPerTicket: maxPlayersPerTicket,
+      holesRequired: parseInt(row.getAttribute("data-holes") || "0"),
       qty: 0
     };
 
@@ -313,6 +315,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     incBtn.addEventListener("click", () => {
+      const holesRequired = cart[id].holesRequired;
+      const localRemaining = calculateLocalRemainingHoles();
+      
+      if (holesRequired > 0 && localRemaining < holesRequired) {
+        // Prevent increment if not enough holes left
+        return;
+      }
+      
       if (cart[id].qty < 10) {
         cart[id].qty++;
         qtyValInput.value = cart[id].qty;
@@ -321,10 +331,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  function calculateLocalRemainingHoles() {
+    let holesInCart = 0;
+    Object.keys(cart).forEach(id => {
+      holesInCart += (cart[id].qty * cart[id].holesRequired);
+    });
+    return totalAvailableHoles - holesInCart;
+  }
+
   function updateCheckoutFlow() {
     let total = 0;
     let totalQty = 0;
     let totalPlayers = 0;
+
+    const localRemaining = calculateLocalRemainingHoles();
+
+    // Update availability badges and button states
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      const incBtn = document.querySelector(`.ticket-item-row[data-id="${id}"] .inc-qty`);
+      const badge = document.getElementById(`badge-${id}`);
+
+      if (item.holesRequired > 0) {
+        if (badge) {
+          badge.style.display = 'inline-block';
+          if (totalAvailableHoles < item.holesRequired) {
+             badge.textContent = 'Sold Out';
+             badge.className = 'availability-badge sold-out';
+          } else {
+             badge.textContent = `${totalAvailableHoles} Remaining`;
+             badge.className = 'availability-badge';
+          }
+        }
+
+        // Disable increment if we don't have enough holes locally
+        if (localRemaining < item.holesRequired || totalAvailableHoles < item.holesRequired) {
+          incBtn.disabled = true;
+          incBtn.style.opacity = '0.5';
+          incBtn.style.cursor = 'not-allowed';
+        } else {
+          incBtn.disabled = false;
+          incBtn.style.opacity = '1';
+          incBtn.style.cursor = 'pointer';
+        }
+      }
+    });
 
     cartItemsBody.innerHTML = "";
 
@@ -496,6 +547,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const toggleBtn = document.getElementById("btn-toggle-whos-in");
 
       if (players && players.length > 0) {
+        // Sort alphabetically by last name
+        players.sort((a, b) => {
+          const getLastName = (name) => name.trim().split(' ').pop().toLowerCase();
+          return getLastName(a.full_name).localeCompare(getLastName(b.full_name));
+        });
+
         whosInContainer.style.display = 'block';
         totalSpan.textContent = players.length;
         listContainer.innerHTML = '';
@@ -535,6 +592,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Fetch available holes from DB
+  async function fetchAvailableHoles() {
+    if (!supabase) return;
+    try {
+      const { data, error } = await supabase.rpc('get_available_holes');
+      if (error) throw error;
+      if (data !== null) {
+        totalAvailableHoles = data;
+        updateCheckoutFlow();
+      }
+    } catch (err) {
+      console.error("Error fetching available holes:", err);
+    }
+  }
+
   // Initial Data Load
   loadWhosIn();
+  fetchAvailableHoles();
 });

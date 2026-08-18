@@ -82,3 +82,25 @@ SELECT full_name, handicap, created_at FROM public.golf_players;
 
 GRANT SELECT ON public.public_golf_players TO anon;
 GRANT SELECT ON public.public_golf_players TO authenticated;
+
+-- Function to securely calculate available holes based on registered items
+CREATE OR REPLACE FUNCTION public.get_available_holes()
+RETURNS integer AS $$
+DECLARE
+  used_holes integer;
+BEGIN
+  SELECT COALESCE(SUM(
+    CASE 
+      WHEN package_id = 'diamond-record' THEN quantity * 2
+      WHEN package_id IN ('hole-sponsor', 'gold-record', 'platinum-record', 'longest-drive', 'closest-to-pin') THEN quantity * 1
+      ELSE 0
+    END
+  ), 0) INTO used_holes
+  FROM public.golf_registration_items;
+  
+  RETURN 18 - used_holes;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+GRANT EXECUTE ON FUNCTION public.get_available_holes TO anon;
+GRANT EXECUTE ON FUNCTION public.get_available_holes TO authenticated;
