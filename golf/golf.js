@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const playersWrapper = document.getElementById("players-wrapper");
   const regForm = document.getElementById("registration-form");
 
+  // Registration deadline
+  const REGISTRATION_DEADLINE = new Date("2026-10-15T23:59:59-04:00"); // October 15 at midnight Eastern Time
+
   // Modal Elements
   const receiptModal = document.getElementById("receipt-modal");
   const receiptIdVal = document.getElementById("receipt-id-val");
@@ -280,7 +283,8 @@ document.addEventListener("DOMContentLoaded", () => {
           contactName: contactName,
           contactEmail: contactEmail,
           total: total,
-          items: items
+          items: items,
+          players: players
         }
       });
       if (fnErr) console.error("Failed to trigger confirmation email:", fnErr);
@@ -319,6 +323,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     incBtn.addEventListener("click", () => {
+      if (new Date() > REGISTRATION_DEADLINE) return;
+
       const holesRequired = cart[id].holesRequired;
       const localInventory = calculateLocalRemainingInventory();
       
@@ -367,6 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalPlayers = 0;
 
     const localInventory = calculateLocalRemainingInventory();
+    const isPastDeadline = new Date() > REGISTRATION_DEADLINE;
 
     // Update availability badges and button states
     Object.keys(cart).forEach(id => {
@@ -374,7 +381,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const incBtn = document.querySelector(`.ticket-item-row[data-id="${id}"] .inc-qty`);
       const badge = document.getElementById(`badge-${id}`);
 
-      if (item.holesRequired > 0) {
+      if (isPastDeadline) {
+        // Enforce registration deadline
+        if (badge) {
+          badge.style.display = 'inline-block';
+          badge.textContent = 'Registration Closed';
+          badge.className = 'availability-badge sold-out';
+        }
+        incBtn.disabled = true;
+        incBtn.style.opacity = '0.5';
+        incBtn.style.cursor = 'not-allowed';
+      } else if (item.holesRequired > 0) {
         let globalRemaining = 0;
         let locRemaining = 0;
         
@@ -413,6 +430,16 @@ document.addEventListener("DOMContentLoaded", () => {
           incBtn.style.opacity = '1';
           incBtn.style.cursor = 'pointer';
         }
+      } else {
+        // Items with no hole requirement
+        if (badge) {
+          badge.style.display = 'inline-block';
+          badge.textContent = 'Unlimited';
+          badge.className = 'availability-badge unlimited';
+        }
+        incBtn.disabled = false;
+        incBtn.style.opacity = '1';
+        incBtn.style.cursor = 'pointer';
       }
     });
 

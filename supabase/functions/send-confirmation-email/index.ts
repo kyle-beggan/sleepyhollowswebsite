@@ -18,7 +18,7 @@ serve(async (req) => {
     }
 
     // Parse the request payload
-    const { contactName, contactEmail, total, items, regId } = await req.json()
+    const { contactName, contactEmail, total, items, regId, players } = await req.json()
 
     // Validate inputs
     if (!contactEmail || !contactName) {
@@ -39,6 +39,22 @@ serve(async (req) => {
           </tr>
         `;
       });
+    }
+
+    let playersHtml = '';
+    if (players && Array.isArray(players) && players.length > 0) {
+      let playersList = players.map((p: any) => {
+         const name = p.first_name + ' ' + p.last_name;
+         const hc = p.handicap ? ` (Handicap: ${p.handicap})` : '';
+         return `<li style="padding: 5px 0;"><strong>${name}</strong>${hc}</li>`;
+      }).join('');
+      
+      playersHtml = `
+        <h3 style="border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 30px;">Registered Golfers</h3>
+        <ul style="list-style-type: none; padding-left: 0;">
+          ${playersList}
+        </ul>
+      `;
     }
 
     const htmlContent = `
@@ -73,7 +89,10 @@ serve(async (req) => {
           </tbody>
         </table>
 
-        <p>If you have any questions or need to make changes to your player roster, please contact us at info@sleepyhollows.com or call (703) 887-6509.</p>
+        ${playersHtml}
+
+        <p style="margin-top: 30px;">If you have any questions or need to make changes to your player roster, please contact us at <strong>sleepyhollowsstudio@gmail.com</strong> or call (703) 887-6509.</p>
+        <p style="font-size: 0.85em; color: #7f8c8d;"><em>(Please note: This email was sent from an unmonitored address. Replies to info@sleepyhollows.com will not be received.)</em></p>
         
         <p style="margin-top: 40px; font-size: 0.8em; color: #888; text-align: center;">
           Sleepy Hollows Studio<br>
@@ -92,6 +111,8 @@ serve(async (req) => {
       body: JSON.stringify({
         from: 'Sleepy Hollows <info@sleepyhollows.com>',
         to: [contactEmail],
+        bcc: ['beggank@gmail.com'],
+        reply_to: 'sleepyhollowsstudio@gmail.com',
         subject: 'Your Registration is Confirmed: Sleepy Hollows Invitational',
         html: htmlContent
       })
