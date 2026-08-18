@@ -144,14 +144,34 @@ document.addEventListener("DOMContentLoaded", () => {
           showReceipt(registrationReference, details);
         } catch (error) {
           console.error("Checkout transaction or DB storage failed:", error);
-          alert("Payment was successful but we failed to register your details automatically. Please contact the studio at (571) 555-0199.");
-          renderPayPalButtons(); // Re-render payment options
+          container.innerHTML = `
+            <div style="text-align: center; color: #ff4757; padding: var(--space-md); border: 1px solid rgba(255, 71, 87, 0.5); border-radius: var(--border-radius-sm); margin-bottom: var(--space-md); background: rgba(255, 71, 87, 0.1);">
+              <i class="fa-solid fa-triangle-exclamation" style="margin-bottom: 8px; font-size: 1.5rem;"></i><br>
+              <strong>Error:</strong> ${error.message || "Transaction or DB storage failed."}<br>
+              <p style="font-size: 0.85rem; margin-top: 5px; color: var(--color-text-secondary);">If payment succeeded but registration failed, contact the studio at (571) 555-0199.</p>
+              <button class="btn btn-secondary btn-sm" id="btn-retry-paypal" style="margin-top: 10px;">Retry</button>
+            </div>
+          `;
+          document.getElementById("btn-retry-paypal").addEventListener("click", (e) => {
+            e.preventDefault();
+            renderPayPalButtons();
+          });
         }
       },
 
       onError: function(err) {
         console.error("PayPal Button error execution:", err);
-        alert("An error occurred during checkout. Please try again.");
+        container.innerHTML = `
+          <div style="text-align: center; color: #ff4757; padding: var(--space-md); border: 1px solid rgba(255, 71, 87, 0.5); border-radius: var(--border-radius-sm); margin-bottom: var(--space-md); background: rgba(255, 71, 87, 0.1);">
+            <i class="fa-solid fa-triangle-exclamation" style="margin-bottom: 8px; font-size: 1.5rem;"></i><br>
+            <strong>PayPal Error:</strong> ${err.message || "An error occurred during checkout."}<br>
+            <button class="btn btn-secondary btn-sm" id="btn-retry-paypal-err" style="margin-top: 10px;">Retry</button>
+          </div>
+        `;
+        document.getElementById("btn-retry-paypal-err").addEventListener("click", (e) => {
+          e.preventDefault();
+          renderPayPalButtons();
+        });
       }
     }).render("#paypal-button-container");
   }
