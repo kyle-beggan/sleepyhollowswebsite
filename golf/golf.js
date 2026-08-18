@@ -599,62 +599,116 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load "Who's In" Players
   async function loadWhosIn() {
     if (!supabase) return;
-    try {
-      const { data: players, error } = await supabase
-        .from('public_golf_players')
-        .select('*')
-        .order('created_at', { ascending: true });
 
-      if (error) throw error;
+    try {
+      const [playersRes, sponsorsRes] = await Promise.all([
+        supabase.from('public_golf_players').select('*'),
+        supabase.from('public_golf_sponsors').select('*')
+      ]);
+
+      if (playersRes.error) throw playersRes.error;
+      if (sponsorsRes.error) throw sponsorsRes.error;
+
+      const players = playersRes.data || [];
+      const sponsors = sponsorsRes.data || [];
 
       const whosInContainer = document.getElementById("whos-in");
-      const listContainer = document.getElementById("whos-in-list");
-      const totalSpan = document.getElementById("whos-in-total");
-      const toggleBtn = document.getElementById("btn-toggle-whos-in");
+      const btnTogglePlayers = document.getElementById("btn-toggle-whos-in-players");
+      const btnToggleSponsors = document.getElementById("btn-toggle-whos-in-sponsors");
+      
+      const playersListDiv = document.getElementById("whos-in-players-list");
+      const sponsorsListDiv = document.getElementById("whos-in-sponsors-list");
+      
+      const playersTotalSpan = document.getElementById("whos-in-players-total");
+      const sponsorsTotalSpan = document.getElementById("whos-in-sponsors-total");
 
-      if (players && players.length > 0) {
-        // Sort alphabetically by last name
+      // Show section if any data exists
+      if (players.length > 0 || sponsors.length > 0) {
+        whosInContainer.style.display = "block";
+      }
+
+      // Process Players
+      if (players.length > 0) {
+        playersTotalSpan.textContent = players.length;
+
+        // Sort players alphabetically by last name
         players.sort((a, b) => {
-          const getLastName = (name) => name.trim().split(' ').pop().toLowerCase();
-          return getLastName(a.full_name).localeCompare(getLastName(b.full_name));
+          const lastA = a.full_name.split(' ').pop().toLowerCase();
+          const lastB = b.full_name.split(' ').pop().toLowerCase();
+          return lastA.localeCompare(lastB);
         });
 
-        whosInContainer.style.display = 'block';
-        totalSpan.textContent = players.length;
-        listContainer.innerHTML = '';
-        players.forEach(player => {
-          const row = document.createElement("div");
-          row.style.display = "flex";
-          row.style.alignItems = "center";
-          row.style.justifyContent = "space-between";
-          row.style.padding = "10px 15px";
-          row.style.background = "rgba(255,255,255,0.03)";
-          row.style.borderRadius = "var(--border-radius-sm)";
-          row.style.border = "1px solid var(--glass-border)";
+        playersListDiv.innerHTML = '';
+        players.forEach(p => {
+          const div = document.createElement("div");
+          div.className = "player-entry-card";
+          div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border); margin-bottom: 10px;";
           
-          row.innerHTML = `
-            <div style="display: flex; alignItems: center; gap: 15px;">
-              <i class="fa-solid fa-user" style="font-size: 1.2rem; color: var(--color-accent);"></i>
-              <span style="font-weight: 600; color: var(--color-text-primary); font-size: 0.95rem;">${player.full_name}</span>
+          div.innerHTML = `
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; color: white;">
+              <i class="fa-solid fa-user"></i>
             </div>
-            <span style="font-size: 0.85rem; color: var(--color-text-secondary); background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 4px;">Handicap: ${player.handicap}</span>
+            <div>
+              <div class="player-entry-title" style="font-weight: 600; font-size: 1.05rem;">${p.full_name}</div>
+              <div style="font-size: 0.85rem; color: var(--color-text-muted);">Handicap: ${p.handicap || 'N/A'}</div>
+            </div>
           `;
-          listContainer.appendChild(row);
+          playersListDiv.appendChild(div);
         });
 
-        toggleBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (listContainer.style.display === 'none') {
-            listContainer.style.display = 'flex';
-            toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-up" style="margin-right: 6px;"></i> Hide Players';
+        btnTogglePlayers.addEventListener("click", () => {
+          if (playersListDiv.style.display === "none") {
+            playersListDiv.style.display = "block";
+            btnTogglePlayers.innerHTML = `Hide Players (<span id="whos-in-players-total">${players.length}</span>)`;
           } else {
-            listContainer.style.display = 'none';
-            toggleBtn.innerHTML = '<i class="fa-solid fa-chevron-down" style="margin-right: 6px;"></i> Show Players';
+            playersListDiv.style.display = "none";
+            btnTogglePlayers.innerHTML = `Show Players (<span id="whos-in-players-total">${players.length}</span>)`;
           }
         });
       }
+
+      // Process Sponsors
+      if (sponsors.length > 0) {
+        sponsorsTotalSpan.textContent = sponsors.length;
+
+        // Sort sponsors alphabetically by last name (or company name if single word)
+        sponsors.sort((a, b) => {
+          const lastA = a.sponsor_name.split(' ').pop().toLowerCase();
+          const lastB = b.sponsor_name.split(' ').pop().toLowerCase();
+          return lastA.localeCompare(lastB);
+        });
+
+        sponsorsListDiv.innerHTML = '';
+        sponsors.forEach(s => {
+          const div = document.createElement("div");
+          div.className = "sponsor-entry-card";
+          div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border); margin-bottom: 10px;";
+          
+          div.innerHTML = `
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-accent); display: flex; align-items: center; justify-content: center; color: white;">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div>
+              <div class="sponsor-entry-title" style="font-weight: 600; font-size: 1.05rem;">${s.sponsor_name}</div>
+              <div style="font-size: 0.85rem; color: var(--color-text-muted);">${s.package_title}</div>
+            </div>
+          `;
+          sponsorsListDiv.appendChild(div);
+        });
+
+        btnToggleSponsors.addEventListener("click", () => {
+          if (sponsorsListDiv.style.display === "none") {
+            sponsorsListDiv.style.display = "block";
+            btnToggleSponsors.innerHTML = `Hide Sponsors (<span id="whos-in-sponsors-total">${sponsors.length}</span>)`;
+          } else {
+            sponsorsListDiv.style.display = "none";
+            btnToggleSponsors.innerHTML = `Show Sponsors (<span id="whos-in-sponsors-total">${sponsors.length}</span>)`;
+          }
+        });
+      }
+
     } catch (err) {
-      console.error("Error loading players for Who's In section:", err);
+      console.error("Error loading who is in:", err);
     }
   }
 
