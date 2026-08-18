@@ -94,13 +94,14 @@ p.lead {
 }
 
 a {
-  color: var(--color-primary);
+  color: #ffffff;
+  font-weight: bold;
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-primary-hover);
+  color: var(--color-accent);
 }
 
 img {

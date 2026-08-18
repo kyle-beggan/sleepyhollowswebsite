@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
 
     window.paypal.Buttons({
+      fundingSource: window.paypal.FUNDING.PAYPAL,
       onInit: function(data, actions) {
         // Disable by default until form validation succeeds
         actions.disable();
