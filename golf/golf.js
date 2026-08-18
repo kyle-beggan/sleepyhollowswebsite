@@ -203,21 +203,23 @@ document.addEventListener("DOMContentLoaded", () => {
       total += cart[id].qty * cart[id].price;
     });
 
+    // Generate UUID v4 for the registration to avoid RLS SELECT permissions issue
+    const regId = crypto.randomUUID();
+
     // 1. Insert registrations
-    const { data: reg, error: regErr } = await supabase
+    const { error: regErr } = await supabase
       .from("golf_registrations")
       .insert([{
+        id: regId,
         contact_name: contactName,
         contact_email: contactEmail,
         contact_phone: contactPhone,
         total_amount: total,
         payment_reference: paypalDetails.id,
         payment_status: "paid"
-      }])
-      .select();
+      }]);
 
     if (regErr) throw regErr;
-    const regId = reg[0].id;
 
     // 2. Insert items
     const items = [];
