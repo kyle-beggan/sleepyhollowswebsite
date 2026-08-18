@@ -267,6 +267,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (playersErr) throw playersErr;
     }
 
+    // 4. Trigger Email Confirmation Edge Function
+    try {
+      const { error: fnErr } = await supabase.functions.invoke('send-confirmation-email', {
+        body: {
+          regId: regId,
+          contactName: contactName,
+          contactEmail: contactEmail,
+          total: total,
+          items: items
+        }
+      });
+      if (fnErr) console.error("Failed to trigger confirmation email:", fnErr);
+    } catch (fnCatchErr) {
+      console.error("Exception triggering confirmation email:", fnCatchErr);
+    }
+
     return regId;
   }
 
