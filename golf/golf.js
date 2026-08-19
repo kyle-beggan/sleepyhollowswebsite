@@ -649,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <i class="fa-solid fa-user"></i>
             </div>
             <div>
-              <div class="player-entry-title" style="font-weight: 600; font-size: 1.05rem;">${p.full_name}</div>
+              <div class="player-entry-title" style="font-weight: 600; font-size: 1.05rem; color: #ffffff;">${p.full_name}</div>
               <div style="font-size: 0.85rem; color: var(--color-text-muted);">Handicap: ${p.handicap || 'N/A'}</div>
             </div>
           `;
@@ -689,7 +689,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <i class="fa-solid fa-star"></i>
             </div>
             <div>
-              <div class="sponsor-entry-title" style="font-weight: 600; font-size: 1.05rem;">${s.sponsor_name}</div>
+              <div class="sponsor-entry-title" style="font-weight: 600; font-size: 1.05rem; color: #ffffff;">${s.sponsor_name}</div>
               <div style="font-size: 0.85rem; color: var(--color-text-muted);">${s.package_title}</div>
             </div>
           `;
