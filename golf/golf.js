@@ -662,11 +662,14 @@ document.addEventListener("DOMContentLoaded", () => {
           return lastA.localeCompare(lastB);
         });
 
+        playersListDiv.style.gridTemplateColumns = "repeat(auto-fit, minmax(250px, 1fr))";
+        playersListDiv.style.gap = "15px";
+
         playersListDiv.innerHTML = '';
         players.forEach(p => {
           const div = document.createElement("div");
           div.className = "player-entry-card";
-          div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border); margin-bottom: 10px;";
+          div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border);";
           
           div.innerHTML = `
             <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; color: white;">
@@ -682,7 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         btnTogglePlayers.addEventListener("click", () => {
           if (playersListDiv.style.display === "none") {
-            playersListDiv.style.display = "block";
+            playersListDiv.style.display = "grid";
             btnTogglePlayers.innerHTML = `Hide Players (<span id="whos-in-players-total">${players.length}</span>)`;
           } else {
             playersListDiv.style.display = "none";
@@ -702,11 +705,14 @@ document.addEventListener("DOMContentLoaded", () => {
           return lastA.localeCompare(lastB);
         });
 
+        sponsorsListDiv.style.gridTemplateColumns = "repeat(auto-fit, minmax(250px, 1fr))";
+        sponsorsListDiv.style.gap = "15px";
+
         sponsorsListDiv.innerHTML = '';
         sponsors.forEach(s => {
           const div = document.createElement("div");
           div.className = "sponsor-entry-card";
-          div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border); margin-bottom: 10px;";
+          div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border);";
           
           div.innerHTML = `
             <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-accent); display: flex; align-items: center; justify-content: center; color: white;">
@@ -722,7 +728,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         btnToggleSponsors.addEventListener("click", () => {
           if (sponsorsListDiv.style.display === "none") {
-            sponsorsListDiv.style.display = "block";
+            sponsorsListDiv.style.display = "grid";
             btnToggleSponsors.innerHTML = `Hide Sponsors (<span id="whos-in-sponsors-total">${sponsors.length}</span>)`;
           } else {
             sponsorsListDiv.style.display = "none";
