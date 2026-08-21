@@ -90,6 +90,7 @@ DECLARE
   used_general_holes integer;
   used_longest_drive integer;
   used_closest_to_pin integer;
+  used_diamond integer;
 BEGIN
   -- General holes
   SELECT COALESCE(SUM(
@@ -110,11 +111,17 @@ BEGIN
   SELECT COALESCE(SUM(quantity), 0) INTO used_closest_to_pin
   FROM public.golf_registration_items
   WHERE package_id = 'closest-to-pin';
+
+  -- Diamond Sponsors
+  SELECT COALESCE(SUM(quantity), 0) INTO used_diamond
+  FROM public.golf_registration_items
+  WHERE package_id = 'diamond-record';
   
   RETURN json_build_object(
     'general_holes_remaining', 16 - used_general_holes,
     'longest_drive_remaining', 1 - used_longest_drive,
-    'closest_to_pin_remaining', 1 - used_closest_to_pin
+    'closest_to_pin_remaining', 1 - used_closest_to_pin,
+    'diamond_remaining', 1 - used_diamond
   );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

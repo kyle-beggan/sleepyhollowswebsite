@@ -359,6 +359,9 @@ document.addEventListener("DOMContentLoaded", () => {
         localInventory.longest_drive_remaining -= qty;
       } else if (id === 'closest-to-pin') {
         localInventory.closest_to_pin_remaining -= qty;
+      } else if (id === 'diamond-record') {
+        localInventory.diamond_remaining -= qty;
+        localInventory.general_holes_remaining -= (qty * cart[id].holesRequired);
       } else if (cart[id].holesRequired > 0) {
         localInventory.general_holes_remaining -= (qty * cart[id].holesRequired);
       }
@@ -392,15 +395,22 @@ document.addEventListener("DOMContentLoaded", () => {
         incBtn.style.opacity = '0.5';
         incBtn.style.cursor = 'not-allowed';
       } else if (item.holesRequired > 0) {
-        let globalRemaining = 0;
-        let locRemaining = 0;
-        
+        let globalRemaining;
+        let locRemaining;
+        let specificLimit = null;
+        let localSpecificLimit = null;
+
         if (id === 'longest-drive') {
           globalRemaining = inventory.longest_drive_remaining;
           locRemaining = localInventory.longest_drive_remaining;
         } else if (id === 'closest-to-pin') {
           globalRemaining = inventory.closest_to_pin_remaining;
           locRemaining = localInventory.closest_to_pin_remaining;
+        } else if (id === 'diamond-record') {
+          globalRemaining = inventory.general_holes_remaining;
+          locRemaining = localInventory.general_holes_remaining;
+          specificLimit = inventory.diamond_remaining !== undefined ? inventory.diamond_remaining : 1;
+          localSpecificLimit = localInventory.diamond_remaining;
         } else {
           globalRemaining = inventory.general_holes_remaining;
           locRemaining = localInventory.general_holes_remaining;
@@ -411,6 +421,10 @@ document.addEventListener("DOMContentLoaded", () => {
           
           let packagesAvailable = Math.floor(globalRemaining / item.holesRequired);
           
+          if (specificLimit !== null && packagesAvailable > specificLimit) {
+            packagesAvailable = specificLimit;
+          }
+          
           if (packagesAvailable <= 0) {
              badge.textContent = 'Sold Out';
              badge.className = 'availability-badge sold-out';
@@ -420,8 +434,18 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
 
-        // Disable increment if we don't have enough holes locally
-        if (locRemaining < item.holesRequired || globalRemaining < item.holesRequired) {
+        // Disable increment if we don't have enough holes locally or specific limit hit
+        let specificLimitReached = false;
+        if (localSpecificLimit !== null && localSpecificLimit <= 0) {
+           specificLimitReached = true;
+        }
+        
+        let globalSpecificLimitReached = false;
+        if (specificLimit !== null && specificLimit <= 0) {
+           globalSpecificLimitReached = true;
+        }
+
+        if (locRemaining < item.holesRequired || globalRemaining < item.holesRequired || specificLimitReached || globalSpecificLimitReached) {
           incBtn.disabled = true;
           incBtn.style.opacity = '0.5';
           incBtn.style.cursor = 'not-allowed';
