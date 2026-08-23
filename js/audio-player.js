@@ -43,6 +43,7 @@ const initAudioPlayer = () => {
     
     // Ensure the src is properly URI encoded for live sites
     audio.src = encodeURI(track.src);
+    audio.load();
     playerTitle.textContent = track.title;
     playerArtist.textContent = track.artist;
     
@@ -88,14 +89,18 @@ const initAudioPlayer = () => {
     let index = currentTrackIndex - 1;
     if (index < 0) index = playlist.length - 1;
     loadTrack(index);
-    audio.play().catch(e => {});
+    setTimeout(() => {
+      audio.play().catch(e => console.error("Playback failed: ", e));
+    }, 50);
   };
 
   const nextTrack = () => {
     let index = currentTrackIndex + 1;
     if (index >= playlist.length) index = 0;
     loadTrack(index);
-    audio.play().catch(e => {});
+    setTimeout(() => {
+      audio.play().catch(e => console.error("Playback failed: ", e));
+    }, 50);
   };
 
   prevBtn.addEventListener('click', prevTrack);
