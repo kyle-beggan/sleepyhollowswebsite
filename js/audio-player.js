@@ -1,34 +1,6 @@
 /* Sleepy Hollows Custom Audio Player Script */
 
 const initAudioPlayer = () => {
-  // Track Data
-  const playlist = [
-    {
-      title: 'Golf Love (NO MIX)',
-      artist: 'Akshan',
-      src: 'assets/audio/6.26.25 TNS_Akshan_Golf Love_NO MIX.mp3',
-      lyrics: `[Instrumental / No Lyrics Available]`
-    },
-    {
-      title: '6 Ft Apart (FINAL)',
-      artist: 'TNS',
-      src: 'assets/audio/TNS_6.10.21_6 Ft Apart_FINAL .mp3',
-      lyrics: `[Instrumental / No Lyrics Available]`
-    },
-    {
-      title: 'Horns For Days (DRAFT)',
-      artist: 'TNS',
-      src: 'assets/audio/TNS_7.30.26 Horns For Days_DRAFT.mp3',
-      lyrics: `[Instrumental / No Lyrics Available]`
-    },
-    {
-      title: 'The River (Mix4)',
-      artist: 'Sleepy Hollows',
-      src: 'assets/audio/The River_Mix4 for vid.mp3',
-      lyrics: `[Instrumental / No Lyrics Available]`
-    }
-  ];
-
   let currentTrackIndex = 0;
   let isPlaying = false;
 
@@ -55,12 +27,22 @@ const initAudioPlayer = () => {
   
   const playlistTracks = document.querySelectorAll('.playlist-track');
 
+  // Track Data (Extracted from DOM)
+  const playlist = Array.from(playlistTracks).map(trackEl => {
+    return {
+      title: trackEl.querySelector('.track-title') ? trackEl.querySelector('.track-title').textContent : '',
+      artist: trackEl.querySelector('.track-desc') ? trackEl.querySelector('.track-desc').textContent : '',
+      src: trackEl.getAttribute('data-src')
+    };
+  });
+
   // 1. Initial State Load
   const loadTrack = (index) => {
     currentTrackIndex = index;
     const track = playlist[index];
     
-    audio.src = track.src;
+    // Ensure the src is properly URI encoded for live sites
+    audio.src = encodeURI(track.src);
     playerTitle.textContent = track.title;
     playerArtist.textContent = track.artist;
     
