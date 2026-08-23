@@ -1,8 +1,8 @@
 /* Sleepy Hollows Studio Main stylesheet bundling components and applying section styles */
 
-@import url('variables.css');
-@import url('base.css');
-@import url('components.css');
+@import url('variables.css?v=1.0.10');
+@import url('base.css?v=1.0.10');
+@import url('components.css?v=1.0.10');
 
 /* ==========================================
    1. Hero Header Banner
