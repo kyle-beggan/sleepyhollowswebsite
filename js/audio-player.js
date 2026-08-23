@@ -88,14 +88,14 @@ const initAudioPlayer = () => {
     let index = currentTrackIndex - 1;
     if (index < 0) index = playlist.length - 1;
     loadTrack(index);
-    if (isPlaying) audio.play().catch(e => {});
+    audio.play().catch(e => {});
   };
 
   const nextTrack = () => {
     let index = currentTrackIndex + 1;
     if (index >= playlist.length) index = 0;
     loadTrack(index);
-    if (isPlaying) audio.play().catch(e => {});
+    audio.play().catch(e => {});
   };
 
   prevBtn.addEventListener('click', prevTrack);
