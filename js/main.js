@@ -14,7 +14,7 @@ async function loadSections() {
 
   const promises = Array.from(includes).map(async (el) => {
     const relativeFile = el.getAttribute('data-include');
-    const file = new URL(relativeFile + '?v=1.0.12', baseUrl).href;
+    const file = new URL(relativeFile + '?v=1.0.13', baseUrl).href;
     try {
       const response = await fetch(file);
       if (response.ok) {
