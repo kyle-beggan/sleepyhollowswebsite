@@ -14,7 +14,7 @@ async function loadSections() {
 
   const promises = Array.from(includes).map(async (el) => {
     const relativeFile = el.getAttribute('data-include');
-    const file = new URL(relativeFile + '?v=1.0.10', baseUrl).href;
+    const file = new URL(relativeFile + '?v=1.0.12', baseUrl).href;
     try {
       const response = await fetch(file);
       if (response.ok) {
@@ -144,39 +144,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   const successMsg = document.getElementById('form-success');
 
   if (bookingForm && successMsg) {
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Get form data
       const formData = new FormData(bookingForm);
-      const bookingData = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        service: formData.get('service'),
-        date: formData.get('date'),
-        message: formData.get('message')
-      };
-
-      // Mock console output
-      console.log('Mock Form Submission Received:', bookingData);
-
-      // Disable button during submit transition simulation
       const submitBtn = bookingForm.querySelector('button[type="submit"]');
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
+      successMsg.style.display = 'none';
 
-      // Simulate network request latency
-      setTimeout(() => {
-        submitBtn.textContent = 'Request Sent!';
-        successMsg.style.display = 'block';
-        bookingForm.reset();
-        
-        // Reset button state
+      try {
+        const response = await fetch('https://formspree.io/f/mwlezjdv', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          submitBtn.textContent = 'Request Sent!';
+          successMsg.style.display = 'block';
+          bookingForm.reset();
+        } else {
+          const data = await response.json();
+          console.error('Form submission error:', data);
+          alert('Oops! There was a problem submitting your form.');
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        alert('Oops! There was a problem submitting your form. Please check your connection.');
+      } finally {
         setTimeout(() => {
           submitBtn.textContent = 'Submit Request';
           submitBtn.disabled = false;
-        }, 3000);
-      }, 1000);
+        }, 4000);
+      }
     });
   }
 
