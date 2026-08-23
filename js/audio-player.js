@@ -4,70 +4,28 @@ const initAudioPlayer = () => {
   // Track Data
   const playlist = [
     {
-      title: 'Night Signals',
-      artist: 'The Blackwoods',
-      src: 'assets/audio/live1.mp3',
-      lyrics: `[Verse 1]
-Under the signals of the night,
-We chased the neon shadows out of sight.
-In the silence of the hollow wood,
-We built a family, misunderstood.
-
-[Chorus]
-Hear the signals calling out your name,
-Through the darkness, nothing stays the same.
-A simple beat, a chord upon the wire,
-We burn together in the creative fire.
-
-[Verse 2]
-The tape is rolling, capture every breath,
-A song of life, a melody for death.
-We track the memories, we print the sound,
-Under the hollows, where the truth is found.`
+      title: 'Golf Love (NO MIX)',
+      artist: 'Akshan',
+      src: 'assets/audio/6.26.25 TNS_Akshan_Golf Love_NO MIX.mp3',
+      lyrics: `[Instrumental / No Lyrics Available]`
     },
     {
-      title: 'Golden Hollows',
-      artist: 'Sleepy Hollows Sessions',
-      src: 'assets/audio/live2.mp3',
-      lyrics: `[Verse 1]
-Take me back to the golden hall,
-Where the autumn colors rise and fall.
-Through the pines where the breezes blow,
-Under sleepy hollows, long ago.
-
-[Chorus]
-Golden hollows, shine your gentle light,
-Guide our voices through the quiet night.
-A rustic room where the acoustic plays,
-Warm as wood and sweet as bygone days.
-
-[Verse 2]
-An isolated room, a single mic,
-Catching every vibration that you like.
-We gather close, we let the music lead,
-This second home is everything we need.`
+      title: '6 Ft Apart (FINAL)',
+      artist: 'TNS',
+      src: 'assets/audio/TNS_6.10.21_6 Ft Apart_FINAL .mp3',
+      lyrics: `[Instrumental / No Lyrics Available]`
     },
     {
-      title: 'Historic Heart',
-      artist: 'Herndon Roots',
-      src: 'assets/audio/live3.mp3',
-      lyrics: `[Verse 1]
-Historic heart beating slow and deep,
-Promises we made and vows to keep.
-Herndon streets in the morning light,
-A song that echoes through the night.
-
-[Chorus]
-Historic heart, sing your legacy,
-Mixed and mastered for eternity.
-We take the old, we blend it with the new,
-A hybrid frequency, honest and true.
-
-[Verse 2]
-The meters bounce, the analog dials turn,
-Lessons in the sound we had to learn.
-From bedroom starts to these brick walls,
-The music rings out, as the twilight falls.`
+      title: 'Horns For Days (DRAFT)',
+      artist: 'TNS',
+      src: 'assets/audio/TNS_7.30.26 Horns For Days_DRAFT.mp3',
+      lyrics: `[Instrumental / No Lyrics Available]`
+    },
+    {
+      title: 'The River (Mix4)',
+      artist: 'Sleepy Hollows',
+      src: 'assets/audio/The River_Mix4 for vid.mp3',
+      lyrics: `[Instrumental / No Lyrics Available]`
     }
   ];
 
@@ -96,9 +54,6 @@ The music rings out, as the twilight falls.`
   const volumeIcon = document.getElementById('volume-icon');
   
   const playlistTracks = document.querySelectorAll('.playlist-track');
-  const lyricsBox = document.getElementById('lyrics-box');
-  const lyricsTitle = document.getElementById('lyrics-title');
-  const lyricsContent = document.getElementById('lyrics-content');
 
   // 1. Initial State Load
   const loadTrack = (index) => {
@@ -123,12 +78,6 @@ The music rings out, as the twilight falls.`
         trackEl.classList.remove('active');
       }
     });
-
-    // If lyrics box is open, update lyrics content
-    if (lyricsBox.classList.contains('active')) {
-      lyricsTitle.textContent = `Lyrics: ${track.title}`;
-      lyricsContent.textContent = track.lyrics;
-    }
   };
 
   // 2. Play / Pause Control
@@ -197,12 +146,17 @@ The music rings out, as the twilight falls.`
     const width = rect.width;
     const seekPercentage = Math.max(0, Math.min(clickX / width, 1));
     
-    if (audio.duration) {
+    if (audio.duration && isFinite(audio.duration)) {
       audio.currentTime = seekPercentage * audio.duration;
     }
   };
 
-  timeline.addEventListener('click', setTimelineProgress);
+  let isDraggingTimeline = false;
+
+  timeline.addEventListener('mousedown', (e) => {
+    isDraggingTimeline = true;
+    setTimelineProgress(e);
+  });
 
   // 6. Volume Adjustments
   const setVolumeProgress = (e) => {
@@ -224,43 +178,37 @@ The music rings out, as the twilight falls.`
     }
   };
 
-  volumeControl.addEventListener('click', setVolumeProgress);
+  let isDraggingVolume = false;
+
+  volumeControl.addEventListener('mousedown', (e) => {
+    isDraggingVolume = true;
+    setVolumeProgress(e);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (isDraggingTimeline) {
+      setTimelineProgress(e);
+    }
+    if (isDraggingVolume) {
+      setVolumeProgress(e);
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDraggingTimeline) {
+      isDraggingTimeline = false;
+    }
+    if (isDraggingVolume) {
+      isDraggingVolume = false;
+    }
+  });
 
   // 7. Playlist Item Selection
   playlistTracks.forEach((trackEl, index) => {
     // Click track row to play
     trackEl.addEventListener('click', (e) => {
-      // Don't trigger play if clicked on lyrics button or download link
-      if (e.target.classList.contains('btn-lyrics') || e.target.closest('a') || e.target.closest('.btn-lyrics')) {
-        return;
-      }
-      
       loadTrack(index);
       audio.play().catch(err => {});
-    });
-  });
-
-  // 8. Lyrics Toggling Box
-  const lyricButtons = document.querySelectorAll('.btn-lyrics');
-  
-  lyricButtons.forEach((btn, index) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Stop playlist row click
-      
-      // If lyrics are already active for this specific track, close it
-      if (currentTrackIndex === index && lyricsBox.classList.contains('active')) {
-        lyricsBox.classList.remove('active');
-        return;
-      }
-
-      // Otherwise, load this track (or remain if active) and show lyrics
-      loadTrack(index);
-      lyricsTitle.textContent = `Lyrics: ${playlist[index].title}`;
-      lyricsContent.textContent = playlist[index].lyrics;
-      lyricsBox.classList.add('active');
-      
-      // Smooth scroll to lyrics box
-      lyricsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   });
 
