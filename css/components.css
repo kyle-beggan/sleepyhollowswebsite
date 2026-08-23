@@ -361,9 +361,17 @@
 }
 
 @media (max-width: 768px) {
+  .tabs-nav {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 0.25rem;
+  }
   .tab-btn {
     font-size: 0.75rem;
-    padding: 0.5rem 0.6rem;
+    padding: 0.5rem 0.25rem;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
   }
 }
 
