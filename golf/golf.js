@@ -655,8 +655,34 @@ document.addEventListener("DOMContentLoaded", () => {
       if (players.length > 0) {
         playersTotalSpan.textContent = players.length;
 
-        // Sort players alphabetically by last name
-        players.sort((a, b) => {
+        const groups = {};
+        const individuals = [];
+
+        // Group by registration_id if present
+        players.forEach(p => {
+          if (p.registration_id) {
+            if (!groups[p.registration_id]) {
+              groups[p.registration_id] = [];
+            }
+            groups[p.registration_id].push(p);
+          } else {
+            individuals.push(p);
+          }
+        });
+
+        const foursomes = [];
+        const others = [...individuals];
+
+        Object.values(groups).forEach(group => {
+          if (group.length === 4) {
+            foursomes.push(group);
+          } else {
+            others.push(...group);
+          }
+        });
+
+        // Sort individuals alphabetically by last name
+        others.sort((a, b) => {
           const lastA = a.full_name.split(' ').pop().toLowerCase();
           const lastB = b.full_name.split(' ').pop().toLowerCase();
           return lastA.localeCompare(lastB);
@@ -666,7 +692,34 @@ document.addEventListener("DOMContentLoaded", () => {
         playersListDiv.style.gap = "15px";
 
         playersListDiv.innerHTML = '';
-        players.forEach(p => {
+
+        // Render foursomes first
+        foursomes.forEach(group => {
+          const div = document.createElement("div");
+          div.className = "player-entry-card foursome-card";
+          div.style = "display: flex; flex-direction: column; gap: 10px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--color-primary);";
+          
+          let html = `<div class="foursome-title" style="font-weight: 600; font-size: 1.1rem; color: var(--color-primary); border-bottom: 1px solid rgba(130, 36, 227, 0.2); padding-bottom: 5px; margin-bottom: 5px;">Foursome</div>`;
+          
+          group.forEach(p => {
+            html += `
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 30px; height: 30px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;">
+                  <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 600; font-size: 0.95rem; color: #ffffff;">${p.full_name}</div>
+                  <div style="font-size: 0.75rem; color: var(--color-text-muted);">Handicap: ${p.handicap || 'N/A'}</div>
+                </div>
+              </div>
+            `;
+          });
+          div.innerHTML = html;
+          playersListDiv.appendChild(div);
+        });
+
+        // Render individuals
+        others.forEach(p => {
           const div = document.createElement("div");
           div.className = "player-entry-card";
           div.style = "display: flex; align-items: center; gap: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid var(--glass-border);";
