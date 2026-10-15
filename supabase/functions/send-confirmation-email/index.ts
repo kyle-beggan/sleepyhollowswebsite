@@ -1,11 +1,17 @@
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
+// Type declarations for Deno runtime in standard TypeScript IDE environments
+declare const Deno: {
+  env: {
+    get(key: string): string | undefined;
+  };
+  serve(handler: (req: Request) => Promise<Response> | Response): void;
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+Deno.serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -31,7 +37,7 @@ serve(async (req) => {
     // Build the items list for the email receipt
     let itemsHtml = '';
     if (items && Array.isArray(items)) {
-      items.forEach(item => {
+      items.forEach((item: any) => {
         itemsHtml += `
           <tr>
             <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.title} (x${item.qty})</td>
@@ -129,10 +135,11 @@ serve(async (req) => {
       JSON.stringify({ success: true, message: "Confirmation email sent." }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
-  } catch (error) {
-    console.error("Edge function error:", error.message)
+  } catch (error: any) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    console.error("Edge function error:", errorMessage)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
