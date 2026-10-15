@@ -20,8 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const playersWrapper = document.getElementById("players-wrapper");
   const regForm = document.getElementById("registration-form");
 
-  // Registration deadline
+  // Registration deadline & player availability
   const REGISTRATION_DEADLINE = new Date("2026-10-15T23:59:59-04:00"); // October 15 at midnight Eastern Time
+  const PLAYER_SPOTS_SOLD_OUT = true; // All tournament golfer spots are sold out
 
   // Modal Elements
   const receiptModal = document.getElementById("receipt-modal");
@@ -324,6 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     incBtn.addEventListener("click", () => {
       if (new Date() > REGISTRATION_DEADLINE) return;
+      if (PLAYER_SPOTS_SOLD_OUT && cart[id].playersPerTicket > 0 && id !== 'longest-drive') return;
 
       const holesRequired = cart[id].holesRequired;
       const localInventory = calculateLocalRemainingInventory();
@@ -349,6 +351,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // Apply initial availability states and badges
+  updateCheckoutFlow();
 
   function calculateLocalRemainingInventory() {
     let localInventory = { ...inventory };
@@ -394,6 +399,16 @@ document.addEventListener("DOMContentLoaded", () => {
         incBtn.disabled = true;
         incBtn.style.opacity = '0.5';
         incBtn.style.cursor = 'not-allowed';
+      } else if (PLAYER_SPOTS_SOLD_OUT && item.playersPerTicket > 0 && id !== 'longest-drive') {
+        // Enforce player spots sold out (except longest-drive sponsor)
+        if (badge) {
+          badge.style.display = 'inline-block';
+          badge.textContent = 'Sold Out';
+          badge.className = 'availability-badge sold-out';
+        }
+        incBtn.disabled = true;
+        incBtn.style.opacity = '0.5';
+        incBtn.style.cursor = 'not-allowed';
       } else if (item.holesRequired > 0) {
         let globalRemaining;
         let locRemaining;
@@ -401,8 +416,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let localSpecificLimit = null;
 
         if (id === 'longest-drive') {
-          globalRemaining = inventory.longest_drive_remaining;
-          locRemaining = localInventory.longest_drive_remaining;
+          globalRemaining = inventory.longest_drive_remaining !== undefined ? Math.min(inventory.longest_drive_remaining, 1) : 1;
+          locRemaining = localInventory.longest_drive_remaining !== undefined ? Math.min(localInventory.longest_drive_remaining, 1) : 1;
+          specificLimit = 1;
+          localSpecificLimit = localInventory.longest_drive_remaining !== undefined ? Math.min(localInventory.longest_drive_remaining, 1) : 1;
         } else if (id === 'closest-to-pin') {
           globalRemaining = inventory.closest_to_pin_remaining;
           locRemaining = localInventory.closest_to_pin_remaining;
