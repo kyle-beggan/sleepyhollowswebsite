@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <title>Book a Session | Sleepy Hollows Recording Studio</title>
+  <meta name="description"
+    content="Book your recording, rehearsal, mixing, or mastering session online at Sleepy Hollows Studio in Historic Herndon, VA. Step-by-step reservation and secure checkout.">
+  <meta name="author" content="Sleepy Hollows Studio">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Book a Session | Sleepy Hollows Studio">
+  <meta property="og:description"
+    content="Reserve recording, rehearsal, mixing, or mastering sessions online at Sleepy Hollows Studio.">
+  <meta property="og:image" content="../assets/img/hero_bg.png">
+  <meta property="og:url" content="https://sleepyhollows.com/bookings/">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;900&family=Quantico:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="../css/main.css?v=1.0.28">
+
+  <!-- Bookings Specific Styles -->
+  <style>
+    /* Hero Subpage adjustments */
+    .hero-sub {
+      min-height: 44vh;
+      height: 48vh;
+    }
+
+    @media (max-width: 768px) {
+      .hero-sub {
+        min-height: 38vh;
+        height: 42vh;
+      }
+      .hero-sub .hero-content {
+        top: -10px;
+      }
+    }
+
+    .booking-details-box {
+      margin-top: calc(-1 * var(--space-lg));
+      z-index: 10;
+      position: relative;
+    }
+
+    .feature-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+
+    @media (min-width: 768px) {
+      .feature-meta-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .meta-box {
+      text-align: center;
+      padding: var(--space-sm);
+      border-right: 1px solid var(--glass-border);
+    }
+
+    .meta-box:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 767px) {
+      .meta-box {
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: var(--space-sm);
+      }
+
+      .meta-box:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .meta-box i {
+      font-size: 2rem;
+      color: var(--color-accent);
+      margin-bottom: var(--space-xs);
+    }
+
+    /* ==========================================
+       Stepper Navigation
+       ========================================== */
+    .booking-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: var(--space-md);
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-lg);
+    }
+
+    .step-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--border-radius-md);
+      cursor: pointer;
+      color: var(--color-text-secondary);
+      transition: all var(--transition-fast);
+      text-align: left;
+    }
+
+    .step-tab:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--color-text-primary);
+    }
+
+    .step-tab.active {
+      background: rgba(130, 36, 227, 0.18);
+      color: var(--color-text-primary);
+      border-color: rgba(130, 36, 227, 0.45);
+      box-shadow: 0 4px 15px rgba(130, 36, 227, 0.2);
+    }
+
+    .step-tab.completed .step-badge {
+      background: #2ed573;
+      color: #0b0c10;
+      border-color: #2ed573;
+    }
+
+    .step-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      transition: all var(--transition-fast);
+    }
+
+    .step-tab.active .step-badge {
+      background: var(--color-primary);
+      border-color: var(--color-primary-hover);
+      box-shadow: 0 0 12px var(--color-primary-glow);
+      color: #ffffff;
+    }
+
+    .step-label {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-caption {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+    }
+
+    .step-tab.active .step-caption {
+      color: var(--color-accent);
+    }
+
+    .step-heading {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+    }
+
+    .step-divider {
+      flex: 1;
+      height: 2px;
+      background: var(--glass-border);
+      transition: background var(--transition-normal);
+      min-width: 15px;
+    }
+
+    .step-divider.filled {
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    }
+
+    @media (max-width: 768px) {
+      .booking-stepper {
+        padding: 6px;
+      }
+      .step-tab {
+        padding: 6px 8px;
+        gap: 6px;
+      }
+      .step-heading {
+        display: none;
+      }
+      .step-caption {
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .step-badge {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* ==========================================
+       Step Panels
+       ========================================== */
+    .step-panel {
+      display: none;
+      animation: stepFadeIn 0.3s ease;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    @keyframes stepFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Category Divider Header */
+    .package-category-title {
+      font-size: 1.15rem;
+      color: var(--color-accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--glass-border);
+      margin: var(--space-lg) 0 var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .package-category-title:first-of-type {
+      margin-top: var(--space-xs);
+    }
+
+    .package-category-title i {
+      font-size: 1.1rem;
+      color: var(--color-primary-hover);
+    }
+
+    /* Package Row Items */
+    .package-item-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-md);
+      background: rgba(255, 255, 255, 0.02);
+      align-items: center;
+      transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .package-item-row:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(130, 36, 227, 0.5);
+    }
+
+    .package-item-row.selected {
+      border-color: var(--color-accent);
+      background: rgba(255, 183, 3, 0.05);
+      box-shadow: 0 0 16px rgba(255, 183, 3, 0.15);
+    }
+
+    @media (min-width: 768px) {
+      .package-item-row {
+        grid-template-columns: 1fr 140px 120px;
+        gap: var(--space-md);
+      }
+    }
+
+    .package-info {
+      text-align: left;
+    }
+
+    .package-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .duration-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: var(--border-radius-sm);
+      background: rgba(130, 36, 227, 0.25);
+      color: #dfb2ff;
+      border: 1px solid rgba(130, 36, 227, 0.4);
+    }
+
+    .package-description {
+      font-size: 0.88rem;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      margin-bottom: 0;
+    }
+
+    .package-price-col {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--color-accent);
+      font-size: 1.35rem;
+      text-align: left;
+    }
+
+    @media (min-width: 768px) {
+      .package-price-col {
+        text-align: right;
+      }
+    }
+
+    .qty-input-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+    }
+
+    @media (min-width: 768px) {
+      .qty-input-wrap {
+        justify-content: flex-end;
+      }
+    }
+
+    .qty-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--glass-border);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .qty-btn:hover {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary-hover);
+    }
+
+    .qty-val {
+      width: 44px;
+      height: 34px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-sm);
+      color: var(--color-text-primary);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Main Checkout Split Grid */
+    .bookings-main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      margin-top: var(--space-md);
+      align-items: flex-start;
+    }
+
+    @media (min-width: 992px) {
+      .bookings-main-grid {
+        grid-template-columns: 1.3fr 1fr;
+      }
+    }
+
+    /* Sticky Order Summary Card */
+    .sticky-summary-card {
+      position: sticky;
+      top: calc(var(--header-height) + 20px);
+    }
+
+    .cart-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-md);
+    }
+
+    .cart-summary-table th {
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-secondary);
+      border-bottom: 1px solid var(--glass-border);
+      padding: var(--space-xs) 0;
+    }
+
+    .cart-summary-table td {
+      padding: var(--space-sm) 0;
+      font-size: 0.9rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    }
+
+    .cart-total-row td {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      border-top: 2px solid var(--glass-border);
+      border-bottom: none;
+      padding-top: var(--space-sm);
+    }
+
+    /* Step Navigation Buttons */
+    .step-footer-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .step-footer-nav .btn {
+      min-width: 150px;
+    }
+
+    /* Validation & Status Notices */
+    .validation-notice {
+      padding: 12px 16px;
+      border-radius: var(--border-radius-md);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      margin-bottom: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all var(--transition-normal);
+    }
+
+    .notice-warning {
+      background: rgba(255, 183, 3, 0.12);
+      border: 1px solid rgba(255, 183, 3, 0.45);
+      color: #ffc83b;
+    }
+
+    .notice-info {
+      background: rgba(130, 36, 227, 0.15);
+      border: 1px solid rgba(130, 36, 227, 0.45);
+      color: #dfb2ff;
+    }
+
+    .notice-success {
+      background: rgba(46, 213, 115, 0.15);
+      border: 1px solid rgba(46, 213, 115, 0.45);
+      color: #2ed573;
+    }
+
+    /* Schedule preview chip */
+    .schedule-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-sm);
+      padding: 8px 12px;
+      margin-bottom: var(--space-md);
+      font-size: 0.85rem;
+    }
+
+    .schedule-chip span {
+      color: var(--color-text-secondary);
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+
+    .schedule-chip strong {
+      color: var(--color-accent);
+      font-family: var(--font-display);
+    }
+
+    /* Form styling overrides */
+    .form-section-title {
+      font-size: 1.05rem;
+      color: var(--color-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: var(--space-md);
+      margin-bottom: var(--space-sm);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-section-title:first-of-type {
+      margin-top: var(--space-xs);
+    }
+
+    .form-section-title i {
+      color: var(--color-primary-hover);
+      font-size: 1rem;
+    }
+
+    select.form-input {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      cursor: pointer;
+    }
+
+    select.form-input option {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+    }
+
+    /* Checkbox & Policy Styling */
+    .policy-checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: var(--space-md) 0;
+      padding: 14px 16px;
+      background: rgba(255, 71, 87, 0.08);
+      border: 1px solid rgba(255, 71, 87, 0.35);
+      border-radius: var(--border-radius-md);
+    }
+
+    .policy-checkbox-container input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+      margin-top: 2px;
+    }
+
+    .policy-checkbox-container label {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      line-height: 1.45;
+      cursor: pointer;
+    }
+
+    /* Review Overview Box in Step 3 */
+    .booking-review-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-md);
+      padding: 16px;
+      margin-bottom: var(--space-md);
+    }
+
+    .booking-review-box .review-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .booking-review-box .review-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .booking-review-box .review-label {
+      color: var(--color-text-secondary);
+    }
+
+    .booking-review-box .review-val {
+      color: var(--color-text-primary);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Modal Styling */
+    .receipt-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(11, 12, 16, 0.95);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-md);
+      overflow-y: auto;
+    }
+
+    .receipt-box {
+      width: 100%;
+      max-width: 620px;
+      background-color: var(--color-bg-secondary);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-md);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      position: relative;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 1px dashed var(--glass-border);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-sm);
+    }
+
+    .receipt-success-icon {
+      font-size: 3rem;
+      color: var(--color-accent);
+      margin-bottom: var(--space-xs);
+    }
+
+    .receipt-details-list {
+      margin: var(--space-md) 0;
+      font-size: 0.9rem;
+    }
+
+    .receipt-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-xs);
+      line-height: 1.4;
+    }
+
+    .receipt-line.total {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      border-top: 1px solid var(--glass-border);
+      padding-top: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+
+    /* Print styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .receipt-box, .receipt-box * {
+        visibility: visible;
+      }
+      .receipt-box {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        border: none;
+        box-shadow: none;
+        color: #000000 !important;
+        background: #ffffff !important;
+      }
+      .receipt-box * {
+        color: #000000 !important;
+      }
+      .receipt-overlay {
+        background: #ffffff !important;
+        position: static;
+      }
+      .receipt-box button {
+        display: none !important;
+      }
+    }
+
+    /* ==========================================
+       Custom Alert Modal Dialog (<dialog>)
+       ========================================== */
+    dialog.custom-step-dialog {
+      border: none;
+      background: transparent;
+      padding: 0;
+      max-width: 480px;
+      width: calc(100% - 32px);
+      margin: auto;
+      border-radius: var(--border-radius-lg);
+      color: var(--color-text-primary);
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    dialog.custom-step-dialog::backdrop {
+      background: rgba(11, 12, 16, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: dialogBackdropFade 0.25s ease-out forwards;
+    }
+
+    @keyframes dialogBackdropFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    dialog.custom-step-dialog[open] {
+      animation: dialogPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes dialogPopIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92) translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .custom-dialog-card {
+      position: relative;
+      background: linear-gradient(155deg, rgba(25, 30, 42, 0.98), rgba(15, 18, 25, 0.99));
+      border: 1px solid rgba(255, 183, 3, 0.45);
+      border-radius: var(--border-radius-lg);
+      padding: 2.25rem 2rem 1.85rem;
+      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.95),
+                  0 0 35px rgba(255, 183, 3, 0.18),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .custom-dialog-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--color-text-secondary);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-size: 0.95rem;
+    }
+
+    .custom-dialog-close:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      transform: rotate(90deg);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .custom-dialog-icon-ring {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 1.25rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 183, 3, 0.25) 0%, rgba(255, 183, 3, 0.04) 70%);
+      border: 2px solid rgba(255, 183, 3, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--color-accent);
+      box-shadow: 0 0 24px rgba(255, 183, 3, 0.35);
+      animation: dialogIconPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes dialogIconPulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 183, 3, 0.25);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 35px rgba(255, 183, 3, 0.5);
+        transform: scale(1.05);
+      }
+    }
+
+    .custom-dialog-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-accent);
+      background: rgba(255, 183, 3, 0.12);
+      border: 1px solid rgba(255, 183, 3, 0.35);
+      border-radius: var(--border-radius-full);
+      margin-bottom: 0.85rem;
+      font-family: var(--font-display);
+    }
+
+    .custom-dialog-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+    }
+
+    .custom-dialog-message {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      max-width: 400px;
+    }
+
+    .custom-dialog-hint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-md);
+      padding: 10px 14px;
+      margin-bottom: 1.75rem;
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      text-align: left;
+      width: 100%;
+    }
+
+    .custom-dialog-hint i {
+      color: var(--color-accent);
+      font-size: 1.05rem;
+      flex-shrink: 0;
+    }
+
+    .custom-dialog-actions {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .custom-dialog-actions .btn {
+      flex: 1;
+      padding: 12px 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    /* Stepper Tab Locked State */
+    .step-tab.locked {
+      opacity: 0.72;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .step-tab.locked:hover {
+      background: rgba(255, 183, 3, 0.08);
+      border-color: rgba(255, 183, 3, 0.25);
+    }
+
+    .step-tab.locked .step-badge {
+      border-style: dashed;
+      color: var(--color-text-muted);
+    }
+
+    @keyframes highlightPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 183, 3, 0.7);
+        border-color: rgba(255, 183, 3, 0.9);
+      }
+      50% {
+        box-shadow: 0 0 25px 4px rgba(255, 183, 3, 0.5);
+        border-color: var(--color-accent);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 183, 3, 0);
+      }
+    }
+
+    .highlight-pulse {
+      animation: highlightPulse 1.2s ease-out;
+    }
+  </style>
+</head>
+
+<body id="home">
+
+  <!-- Preloader Screen -->
+  <div class="loader" id="preloader">
+    <div class="loader-inner">
+      <img src="../assets/img/logo_white.png" alt="Sleepy Hollows Loading Logo" class="loader-logo-img">
+    </div>
+  </div>
+
+  <!-- Sticky Glassmorphic Header -->
+  <header class="header scrolled" id="header">
+    <div class="header-container">
+      <a href="../" class="logo">
+        <img src="../assets/img/logo_white.png" alt="Sleepy Hollows Studio Logo">
+      </a>
+      <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="main-menu" id="menu">
+        <li><a href="../">Home</a></li>
+        <li><a href="../#about">About</a></li>
+        <li><a href="../#services">Services</a></li>
+        <li><a href="../#media">Media</a></li>
+        <li><a href="../#gear">Gear</a></li>
+        <li><a href="../#team">Team</a></li>
+        <li><a href="../#contact">Contact</a></li>
+        <li><a href="#booking-section" class="active">Bookings</a></li>
+        <li><a href="../golf/">Tournament</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero hero-sub" id="booking-hero">
+    <div class="hero-bg-media">
+      <img src="../assets/img/hero_bg.png" alt="Sleepy Hollows Studio Control Room">
+    </div>
+    <div class="hero-content">
+      <div style="margin-bottom: var(--space-xs);">
+        <span class="duration-badge" style="font-size: 0.8rem; padding: 4px 12px; background: rgba(255, 183, 3, 0.2); color: var(--color-accent); border-color: rgba(255, 183, 3, 0.4);">
+          <i class="fa-solid fa-calendar-check" style="margin-right: 6px;"></i> Official Online Reservation
+        </span>
+      </div>
+      <h1 class="uppercase" style="font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: var(--space-xs);">Book a Studio Session</h1>
+      <p class="hero-slogan mb-0" style="color: #ffffff; max-width: 650px; margin: 0 auto;">
+        Follow our step-by-step reservation process to customize your session, pick your date, and checkout securely.
+      </p>
+    </div>
+  </section>
+
+  <!-- Studio Highlights Bar -->
+  <section class="booking-details-box" style="padding-top: 0;">
+    <div class="container">
+      <div class="card-glass" style="margin-top: 0; padding: var(--space-md);">
+        <div class="feature-meta-grid">
+          <div class="meta-box">
+            <i class="fa-solid fa-microphone-lines"></i>
+            <h4 class="uppercase">World-Class Gear</h4>
+            <p class="mb-0">Dangerous Music Master, SSL summing, vintage Neumann mics, and precision analog outboard.</p>
+          </div>
+          <div class="meta-box">
+            <i class="fa-solid fa-drum"></i>
+            <h4 class="uppercase">Full Backline Included</h4>
+            <p class="mb-0">Drums, boutique tube amps, keyboard rigs, and acoustically treated live tracking rooms.</p>
+          </div>
+          <div class="meta-box">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h4 class="uppercase">24-Hour Policy</h4>
+            <p class="mb-0">Transparent rates, zero hidden fees, and flexible scheduling with instant email confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking & Checkout Main Section -->
+  <section id="booking-section" style="padding-top: var(--space-md); padding-bottom: var(--space-xl);">
+    <div class="container">
+
+      <!-- Interactive Stepper Progress Header -->
+      <div class="booking-stepper" role="tablist" aria-label="Booking Steps">
+        <button type="button" class="step-tab active" data-step="1" role="tab" aria-selected="true" id="step-tab-1">
+          <div class="step-badge">1</div>
+          <div class="step-label">
+            <span class="step-caption">Step 1</span>
+            <span class="step-heading">Packages</span>
+          </div>
+        </button>
+
+        <div class="step-divider" id="step-divider-1"></div>
+
+        <button type="button" class="step-tab" data-step="2" role="tab" aria-selected="false" id="step-tab-2">
+          <div class="step-badge">2</div>
+          <div class="step-label">
+            <span class="step-caption">Step 2</span>
+            <span class="step-heading">Session Details</span>
+          </div>
+        </button>
+
+        <div class="step-divider" id="step-divider-2"></div>
+
+        <button type="button" class="step-tab" data-step="3" role="tab" aria-selected="false" id="step-tab-3">
+          <div class="step-badge">3</div>
+          <div class="step-label">
+            <span class="step-caption">Step 3</span>
+            <span class="step-heading">Contact & Pay</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="bookings-main-grid">
+
+        <!-- Left Column: Step Panels Container -->
+        <div>
+
+          <form id="booking-form" novalidate>
+
+            <!-- ==========================================
+                 STEP 1: SELECT PACKAGES
+                 ========================================== -->
+            <div class="card-glass step-panel active" id="step-panel-1" data-panel="1">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-xs);">
+                <div>
+                  <span class="step-caption" style="color: var(--color-accent); font-weight: 700;">Step 1 of 3</span>
+                  <h2 class="uppercase" style="font-size: 1.4rem; margin-bottom: 0;">Select Your Services & Packages</h2>
+                </div>
+                <span class="duration-badge"><i class="fa-solid fa-list-check" style="margin-right: 4px;"></i> Required</span>
+              </div>
+              <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: var(--space-md);">
+                Choose your recording, rehearsal, or mixing packages below using the plus and minus buttons. You can select multiple packages or add-ons.
+              </p>
+
+              <!-- Category: Recording & Tracking -->
+              <div class="package-category-title" data-category="recording">
+                <i class="fa-solid fa-microphone"></i> Recording & Tracking
+              </div>
+
+              <!-- Half Day Recording -->
+              <div class="package-item-row" data-package-id="recording-half">
+                <div class="package-info">
+                  <div class="package-title">
+                    Half Day Recording / Mixing
+                    <span class="duration-badge">4 Hours</span>
+                  </div>
+                  <p class="package-description">
+                    4 hours with engineer (includes 30 min break). Full tracking rooms, vocal isolation booths, world-class mics & preamps.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $300.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Full Day Recording -->
+              <div class="package-item-row" data-package-id="recording-full">
+                <div class="package-info">
+                  <div class="package-title">
+                    Full Day Recording / Mixing
+                    <span class="duration-badge">9 Hours</span>
+                  </div>
+                  <p class="package-description">
+                    9 hours with engineer (includes 60 min break). Full studio lockout, extensive instrument tracking, editing & comping.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $600.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Category: Rehearsal Space -->
+              <div class="package-category-title" data-category="rehearsal">
+                <i class="fa-solid fa-guitar"></i> Band Rehearsal Space
+              </div>
+
+              <!-- Half Day Rehearsal -->
+              <div class="package-item-row" data-package-id="rehearsal-half">
+                <div class="package-info">
+                  <div class="package-title">
+                    Half Day Rehearsal
+                    <span class="duration-badge">4 Hours • Backline</span>
+                  </div>
+                  <p class="package-description">
+                    4 hours w/ engineer (30 min break). Full backline included (drums, amps, PA & mics). Great for tight rehearsals.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $200.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Full Day Rehearsal -->
+              <div class="package-item-row" data-package-id="rehearsal-full">
+                <div class="package-info">
+                  <div class="package-title">
+                    Full Day Rehearsal
+                    <span class="duration-badge">9 Hours • Backline</span>
+                  </div>
+                  <p class="package-description">
+                    9 hours w/ engineer (60 min break). Full backline included. Ideal for pre-production, album run-throughs, or video prep.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $350.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Category: Mixing & Mastering -->
+              <div class="package-category-title" data-category="mastering">
+                <i class="fa-solid fa-sliders"></i> Mixing & Mastering
+              </div>
+
+              <!-- Single Track -->
+              <div class="package-item-row" data-package-id="mix-master-single">
+                <div class="package-info">
+                  <div class="package-title">
+                    Single Track Mixing & Mastering
+                    <span class="duration-badge">2–3 Days Turnaround</span>
+                  </div>
+                  <p class="package-description">
+                    Single song mixing & mastering. Hybrid analog summing, stereo imaging, polish, and streaming-ready volume.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $150.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- EP Package -->
+              <div class="package-item-row" data-package-id="mix-master-ep">
+                <div class="package-info">
+                  <div class="package-title">
+                    EP / Mixtape Package (Up to 4 Tracks)
+                    <span class="duration-badge">5–7 Days Turnaround</span>
+                  </div>
+                  <p class="package-description">
+                    Up to 4 tracks. Cohesive spectral balance, uniform album volume, and radio-ready masters.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $500.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Full Album Package -->
+              <div class="package-item-row" data-package-id="mix-master-album">
+                <div class="package-info">
+                  <div class="package-title">
+                    Full Album Package (Up to 10 Tracks)
+                    <span class="duration-badge">7–10 Days Turnaround</span>
+                  </div>
+                  <p class="package-description">
+                    Up to 10 tracks. Comprehensive album mastering, track sequencing, gap spacing, DDP image + high-res WAV delivery.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $1,100.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Category: Add-Ons -->
+              <div class="package-category-title" data-category="addon">
+                <i class="fa-solid fa-plus-circle"></i> Session Add-Ons
+              </div>
+
+              <!-- Multitrack Stems -->
+              <div class="package-item-row" data-package-id="addon-stems">
+                <div class="package-info">
+                  <div class="package-title">
+                    Multitrack Stems & Project Archive
+                    <span class="duration-badge">Digital Archive</span>
+                  </div>
+                  <p class="package-description">
+                    Consolidated 24-bit/48kHz WAV audio stems + complete DAW session archive exported for your records.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $50.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Extra Hour -->
+              <div class="package-item-row" data-package-id="addon-extra-hour">
+                <div class="package-info">
+                  <div class="package-title">
+                    Additional Studio / Engineer Hour
+                    <span class="duration-badge">1 Hour Extension</span>
+                  </div>
+                  <p class="package-description">
+                    Extra studio time or engineer tracking overtime beyond standard scheduled session block.
+                  </p>
+                </div>
+                <div class="package-price-col">
+                  $75.00 <span style="font-size: 0.75rem; color: var(--color-text-muted);">USD</span>
+                </div>
+                <div class="qty-input-wrap">
+                  <button class="qty-btn dec-qty" type="button" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                  <input class="qty-val" type="text" value="0" readonly>
+                  <button class="qty-btn inc-qty" type="button" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                </div>
+              </div>
+
+              <!-- Step 1 Footer Navigation -->
+              <div class="step-footer-nav" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-primary" id="btn-step-1-next">
+                  Continue to Session Details <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- ==========================================
+                 STEP 2: SCHEDULE & PROJECT DETAILS
+                 ========================================== -->
+            <div class="card-glass step-panel" id="step-panel-2" data-panel="2">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-xs);">
+                <div>
+                  <span class="step-caption" style="color: var(--color-accent); font-weight: 700;">Step 2 of 3</span>
+                  <h2 class="uppercase" style="font-size: 1.4rem; margin-bottom: 0;">Schedule & Project Details</h2>
+                </div>
+                <span class="duration-badge"><i class="fa-solid fa-calendar-day" style="margin-right: 4px;"></i> Scheduling</span>
+              </div>
+              <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: var(--space-md);">
+                Choose your preferred date and time block, and tell us about your project or musical style.
+              </p>
+
+              <!-- Scheduling Info -->
+              <div class="form-section-title">
+                <i class="fa-solid fa-calendar-days"></i> Preferred Date & Time Window
+              </div>
+
+              <div class="grid grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="booking-date">Preferred Session Date *</label>
+                  <input class="form-input" type="date" id="booking-date" name="session_date" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="booking-time">Preferred Time Window *</label>
+                  <select class="form-input" id="booking-time" name="session_time" required>
+                    <option value="" disabled selected>-- Select a Time Window --</option>
+                    <option value="Morning (10:00 AM – 2:00 PM)">Morning (10:00 AM – 2:00 PM)</option>
+                    <option value="Afternoon (2:00 PM – 6:00 PM)">Afternoon (2:00 PM – 6:00 PM)</option>
+                    <option value="Evening (6:00 PM – 10:00 PM)">Evening (6:00 PM – 10:00 PM)</option>
+                    <option value="Full Day Lockout (11:00 AM – 8:00 PM)">Full Day Lockout (11:00 AM – 8:00 PM)</option>
+                    <option value="Flexible / Remote (For Mixing & Mastering)">Flexible / Remote (For Mixing & Mastering)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Project & Band Info -->
+              <div class="form-section-title">
+                <i class="fa-solid fa-compact-disc"></i> Artist & Musical Style
+              </div>
+
+              <div class="grid grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="booking-artist">Artist / Band Name *</label>
+                  <input class="form-input" type="text" id="booking-artist" name="artist_name" required placeholder="e.g. The Neon Lights">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="booking-genre">Musical Genre / Style</label>
+                  <input class="form-input" type="text" id="booking-genre" name="genre" placeholder="e.g. Alternative Rock, Hip-Hop, Acoustic">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-notes">Project Notes & Gear Needs</label>
+                <textarea class="form-input" id="booking-notes" name="notes" placeholder="Tell us about your songs, track counts, instruments you are bringing, or sonic references..."></textarea>
+              </div>
+
+              <!-- Step 2 Footer Navigation -->
+              <div class="step-footer-nav">
+                <button type="button" class="btn btn-secondary" id="btn-step-2-prev">
+                  <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Back to Packages
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-step-2-next">
+                  Continue to Contact & Pay <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- ==========================================
+                 STEP 3: CONTACT & CHECKOUT
+                 ========================================== -->
+            <div class="card-glass step-panel" id="step-panel-3" data-panel="3">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-xs);">
+                <div>
+                  <span class="step-caption" style="color: var(--color-accent); font-weight: 700;">Step 3 of 3</span>
+                  <h2 class="uppercase" style="font-size: 1.4rem; margin-bottom: 0;">Contact Info & Checkout</h2>
+                </div>
+                <span class="duration-badge" style="background: rgba(46, 213, 115, 0.2); color: #2ed573; border-color: rgba(46, 213, 115, 0.4);">
+                  <i class="fa-solid fa-lock" style="margin-right: 4px;"></i> Secure Checkout
+                </span>
+              </div>
+              <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: var(--space-md);">
+                Enter your contact info for your confirmation receipt and complete your payment securely via PayPal.
+              </p>
+
+              <!-- Booking Quick Overview -->
+              <div class="booking-review-box">
+                <div class="review-row">
+                  <span class="review-label">Selected Session:</span>
+                  <span class="review-val" id="review-selected-packages">-</span>
+                </div>
+                <div class="review-row">
+                  <span class="review-label">Artist / Project:</span>
+                  <span class="review-val" id="review-artist-name">-</span>
+                </div>
+                <div class="review-row">
+                  <span class="review-label">Scheduled Date:</span>
+                  <span class="review-val" id="review-session-date">-</span>
+                </div>
+                <div class="review-row">
+                  <span class="review-label">Time Window:</span>
+                  <span class="review-val" id="review-session-time">-</span>
+                </div>
+              </div>
+
+              <!-- Contact & Billing Info -->
+              <div class="form-section-title">
+                <i class="fa-solid fa-user-shield"></i> Primary Contact Information
+              </div>
+
+              <div class="grid grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="booking-name">Primary Contact Name *</label>
+                  <input class="form-input" type="text" id="booking-name" name="contact_name" required placeholder="e.g. Sarah Jenkins">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="booking-email">Email Address * (For Confirmation & Receipt)</label>
+                  <input class="form-input" type="email" id="booking-email" name="contact_email" required placeholder="e.g. sarah@example.com">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-phone">Phone Number * (For Session Coordination)</label>
+                <input class="form-input" type="tel" id="booking-phone" name="contact_phone" required placeholder="e.g. (703) 555-0199">
+              </div>
+
+              <!-- 24-Hour Cancellation Policy Agreement -->
+              <div class="policy-checkbox-container">
+                <input type="checkbox" id="booking-policy" required>
+                <label for="booking-policy">
+                  <strong>24-Hour Cancellation Policy Agreement:</strong> I understand that studio time is reserved exclusively for my session. If I cancel within 24 hours of the scheduled start time, or do not show up, I will be billed ½ the price of that session.
+                </label>
+              </div>
+
+              <!-- In-Panel PayPal Payment Container -->
+              <div class="mt-md" style="border-top: 1px solid var(--glass-border); padding-top: var(--space-md);">
+                <div class="form-section-title" style="margin-top: 0; margin-bottom: var(--space-xs);">
+                  <i class="fa-solid fa-credit-card"></i> Payment via PayPal
+                </div>
+                <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: var(--space-sm);">
+                  Please make sure all contact fields are completed and the cancellation policy is checked to activate the button.
+                </p>
+                <div id="paypal-step-container">
+                  <!-- Mirrored/Maintained for step 3 mobile/desktop focus -->
+                </div>
+              </div>
+
+              <!-- Step 3 Footer Navigation -->
+              <div class="step-footer-nav">
+                <button type="button" class="btn btn-secondary" id="btn-step-3-prev">
+                  <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Back to Details
+                </button>
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+        <!-- Right Column: Sticky Summary & Checkout -->
+        <div>
+          <div class="card-glass sticky-summary-card">
+            <h3 class="uppercase mb-md" style="font-size: 1.15rem; border-bottom: 1px solid var(--glass-border); padding-bottom: var(--space-xs); display: flex; justify-content: space-between; align-items: center;">
+              <span>Order Summary</span>
+              <span id="summary-step-badge" style="font-size: 0.72rem; color: var(--color-accent); font-family: var(--font-body); letter-spacing: 0.05em; font-weight: 600;">STEP 1 OF 3</span>
+            </h3>
+
+            <!-- Schedule chip preview -->
+            <div class="schedule-chip">
+              <div style="margin-bottom: 6px;">
+                <span>Session Date:</span>
+                <strong id="summary-date-display">Select in Step 2</strong>
+              </div>
+              <div>
+                <span>Time Window:</span>
+                <strong id="summary-time-display">Select in Step 2</strong>
+              </div>
+            </div>
+
+            <!-- Items Table -->
+            <table class="cart-summary-table">
+              <thead>
+                <tr>
+                  <th>Package / Item</th>
+                  <th style="text-align: right;">Qty</th>
+                  <th style="text-align: right;">Price</th>
+                </tr>
+              </thead>
+              <tbody id="cart-items-body">
+                <!-- Dynamically populated -->
+              </tbody>
+              <tfoot>
+                <tr class="cart-total-row">
+                  <td>Total Due Now</td>
+                  <td colspan="2" style="text-align: right;" id="cart-total-val">$0.00</td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <!-- Validation Feedback Notice -->
+            <div id="checkout-validation-notice" class="validation-notice notice-warning">
+              <i class="fa-solid fa-circle-exclamation"></i> Step 1: Select at least one session package to proceed.
+            </div>
+
+            <!-- PayPal Button Container -->
+            <div id="paypal-button-container" style="margin-top: var(--space-sm);"></div>
+
+            <!-- Security Assurance -->
+            <div style="font-size: 0.8rem; line-height: 1.45; color: var(--color-text-muted); margin-top: var(--space-md); border-top: 1px solid var(--glass-border); padding-top: var(--space-sm);">
+              <p class="mb-xs">
+                <i class="fa-solid fa-shield-halved text-accent" style="margin-right: 4px;"></i>
+                <strong>Secure Payment:</strong> Processed via 256-bit encrypted PayPal Checkout. Charges will appear on your statement as <em>Sleepy Hollows Studio</em>.
+              </p>
+              <p class="mb-0">
+                <i class="fa-solid fa-envelope text-accent" style="margin-right: 4px;"></i>
+                Instant confirmation and detailed receipt will be sent directly to your email.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Printable Booking Receipt Modal -->
+  <div class="receipt-overlay" id="receipt-modal">
+    <div class="receipt-box">
+      <div class="receipt-header">
+        <i class="fa-solid fa-circle-check receipt-success-icon"></i>
+        <h2 class="uppercase mb-sm" style="font-size: 1.5rem; color: var(--color-text-primary);">Session Reserved!</h2>
+        <p class="mb-0">Thank you for booking with Sleepy Hollows Studio.</p>
+        <p style="font-size: 0.88rem; color: var(--color-accent); font-weight: 700; margin-top: 5px;">
+          CONFIRMATION ID: <span id="receipt-id-val">#SH-BOOK-123456</span>
+        </p>
+      </div>
+
+      <div class="receipt-details-list">
+        <h4 class="uppercase" style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px;">Client & Session Details</h4>
+        <div id="receipt-client-details" style="background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: var(--border-radius-sm); margin-bottom: var(--space-md);">
+          <!-- Populated dynamically -->
+        </div>
+
+        <h4 class="uppercase" style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 8px;">Order Summary</h4>
+        <div id="receipt-items-list">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="receipt-line total">
+          <span>Total Paid:</span>
+          <span id="receipt-total-val">$0.00</span>
+        </div>
+      </div>
+
+      <p style="font-size: 0.82rem; color: var(--color-text-secondary); text-align: center;" class="mb-md">
+        A receipt with full studio access details has been emailed to you. Please arrive 10 minutes prior to your scheduled block in Historic Herndon, VA. Questions? Call us at (703) 887-6509.
+      </p>
+
+      <div class="hero-actions" style="margin-top: var(--space-md); display: flex; gap: 10px; justify-content: center;">
+        <button class="btn btn-primary" onclick="window.print()">
+          <i class="fa-solid fa-print" style="margin-right: 8px;"></i>Print Receipt
+        </button>
+        <button class="btn btn-secondary" id="btn-close-receipt">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Alert Modal Dialog (<dialog>) -->
+  <dialog id="step-alert-dialog" class="custom-step-dialog" closedby="any" aria-labelledby="step-alert-title" aria-describedby="step-alert-message">
+    <div class="custom-dialog-card">
+      <button type="button" class="custom-dialog-close" id="step-alert-close-btn" aria-label="Close dialog">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="custom-dialog-icon-ring" id="step-alert-icon-ring">
+        <i class="fa-solid fa-layer-group" id="step-alert-icon"></i>
+      </div>
+
+      <span class="custom-dialog-badge" id="step-alert-badge">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Step 1 Required</span>
+      </span>
+
+      <h3 class="custom-dialog-title" id="step-alert-title">Complete Step 1 First</h3>
+
+      <p class="custom-dialog-message" id="step-alert-message">
+        You must complete Step 1 by selecting at least one session package before you can go to any additional steps.
+      </p>
+
+      <div class="custom-dialog-hint" id="step-alert-hint">
+        <i class="fa-solid fa-circle-info"></i>
+        <span id="step-alert-hint-text">Choose any recording, rehearsal, mixing, or add-on package below to proceed.</span>
+      </div>
+
+      <div class="custom-dialog-actions">
+        <button type="button" class="btn btn-secondary" id="step-alert-dismiss-btn">Dismiss</button>
+        <button type="button" class="btn btn-primary" id="step-alert-action-btn">
+          <span id="step-alert-action-text">Choose a Package</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Footer -->
+  <div data-include="../sections/footer.html"></div>
+
+  <!-- Scripts -->
+  <script src="../js/main.js?v=1.0.29"></script>
+  <!-- Supabase Client JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Environment Configuration -->
+  <script src="config.js?v=1.0.29"></script>
+  <script src="bookings.js?v=1.0.29"></script>
+</body>
+
+</html>

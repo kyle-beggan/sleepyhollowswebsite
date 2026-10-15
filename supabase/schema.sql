@@ -138,3 +138,67 @@ WHERE i.package_id IN ('diamond-record', 'platinum-record', 'gold-record', 'hole
 
 GRANT SELECT ON public.public_golf_sponsors TO anon;
 GRANT SELECT ON public.public_golf_sponsors TO authenticated;
+
+-- ========================================================
+-- STUDIO SESSION BOOKINGS TABLES & POLICIES
+-- ========================================================
+
+-- Create Studio Bookings table to hold overall reservation details
+CREATE TABLE IF NOT EXISTS public.studio_bookings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    contact_name TEXT NOT NULL,
+    contact_email TEXT NOT NULL,
+    contact_phone TEXT NOT NULL,
+    artist_name TEXT,
+    genre TEXT,
+    session_date DATE,
+    session_time TEXT,
+    notes TEXT,
+    total_amount NUMERIC(10, 2) NOT NULL,
+    payment_status TEXT NOT NULL DEFAULT 'paid',
+    payment_reference TEXT NOT NULL UNIQUE
+);
+
+-- Create Studio Booking Items table to hold selected package details and quantities
+CREATE TABLE IF NOT EXISTS public.studio_booking_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    booking_id UUID NOT NULL REFERENCES public.studio_bookings(id) ON DELETE CASCADE,
+    package_id TEXT NOT NULL,
+    package_title TEXT NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    price_per_item NUMERIC(10, 2) NOT NULL
+);
+
+-- Create Indexes for performance queries
+CREATE INDEX IF NOT EXISTS idx_studio_booking_items_booking_id ON public.studio_booking_items(booking_id);
+CREATE INDEX IF NOT EXISTS idx_studio_bookings_email ON public.studio_bookings(contact_email);
+CREATE INDEX IF NOT EXISTS idx_studio_bookings_session_date ON public.studio_bookings(session_date);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.studio_bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.studio_booking_items ENABLE ROW LEVEL SECURITY;
+
+-- Enable Anonymous Public Insert Policies (so clients can book online)
+CREATE POLICY "Allow public insert on studio_bookings"
+ON public.studio_bookings
+FOR INSERT
+WITH CHECK (true);
+
+CREATE POLICY "Allow public insert on studio_booking_items"
+ON public.studio_booking_items
+FOR INSERT
+WITH CHECK (true);
+
+-- Enable Read-Only Policies for Authenticated Admin Users
+CREATE POLICY "Allow authenticated read on studio_bookings"
+ON public.studio_bookings
+FOR SELECT
+TO authenticated
+USING (true);
+
+CREATE POLICY "Allow authenticated read on studio_booking_items"
+ON public.studio_booking_items
+FOR SELECT
+TO authenticated
+USING (true);
