@@ -281,6 +281,142 @@
       border: 1px solid rgba(255, 71, 87, 0.45);
     }
 
+    .availability-badge.open-amount {
+      background: rgba(235, 94, 40, 0.15);
+      color: var(--color-accent);
+      border: 1px solid rgba(235, 94, 40, 0.45);
+    }
+
+    .custom-sponsor-row {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md) var(--space-sm);
+      margin: 4px 0;
+      border: 1px solid rgba(235, 94, 40, 0.35);
+      position: relative;
+      transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .custom-sponsor-row:hover,
+    .custom-sponsor-row.active {
+      background: rgba(235, 94, 40, 0.05);
+      border-color: var(--color-accent);
+      box-shadow: 0 4px 20px rgba(235, 94, 40, 0.12);
+    }
+
+    .custom-sponsor-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(235, 94, 40, 0.18);
+      border: 1px solid rgba(235, 94, 40, 0.5);
+      color: var(--color-accent);
+      vertical-align: middle;
+    }
+
+    .custom-presets-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .custom-preset-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-sm);
+      color: var(--color-text-secondary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-family: var(--font-display);
+    }
+
+    .custom-preset-btn:hover {
+      background: rgba(235, 94, 40, 0.15);
+      border-color: var(--color-accent);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .custom-preset-btn.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #0b0c10;
+      font-weight: 700;
+    }
+
+    .custom-price-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    @media (min-width: 768px) {
+      .custom-price-col {
+        align-items: flex-end;
+      }
+    }
+
+    .custom-amount-input-container {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-sm);
+      padding: 4px 8px;
+      gap: 3px;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .custom-amount-input-container:focus-within {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 1px var(--color-accent), inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .custom-currency-symbol {
+      color: var(--color-accent);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      user-select: none;
+    }
+
+    .custom-amount-field {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      width: 72px;
+      text-align: left;
+      -moz-appearance: textfield;
+    }
+
+    .custom-amount-field::-webkit-outer-spin-button,
+    .custom-amount-field::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .custom-currency-code {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      user-select: none;
+    }
+
     .player-entry-title {
       font-family: var(--font-display);
       font-size: 0.9rem;
@@ -452,7 +588,7 @@
         style="max-width: 800px; margin: 0 auto var(--space-md); padding: 14px 20px; background: rgba(255, 71, 87, 0.12); border: 1px solid rgba(255, 71, 87, 0.45); border-radius: var(--border-radius-md); text-align: center; color: #ffffff;">
         <i class="fa-solid fa-circle-exclamation" style="color: #ff4757; font-size: 1.1rem; margin-right: 8px;"></i>
         <strong style="color: #ff4757; text-transform: uppercase; letter-spacing: 0.05em;">Golfer Spots Notice:</strong>
-        General player spots are sold out. Hole sponsorships are still available below!
+        General player spots are sold out. Hole sponsorships and custom patron contributions are available below!
       </div>
 
       <div class="card-glass ticket-selector-card">
@@ -513,6 +649,49 @@
             <button class="qty-btn dec-qty"><i class="fa-solid fa-minus"></i></button>
             <input class="qty-val" type="text" value="0" readonly>
             <button class="qty-btn inc-qty"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <!-- Ticket 4: Open-Ended / Custom Sponsor -->
+        <div class="ticket-item-row custom-sponsor-row" data-price="50.00" data-players="0" data-id="custom-sponsor" data-holes="0">
+          <div class="ticket-info">
+            <div class="ticket-title" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="ticket-title-text">Open Sponsorship / Patron</span>
+              <span class="custom-sponsor-tag">Custom Amount</span>
+            </div>
+            <div class="ticket-description">
+              Choose your own custom sponsorship dollar amount to support the tournament and youth music education through NoVA Youth Ensembles. Enter any dollar amount ($5.00 min). Sponsorship only (does not include golf entry).
+            </div>
+            <div class="custom-presets-wrap">
+              <span style="font-size: 0.75rem; color: var(--color-text-muted); align-self: center;">Quick Select:</span>
+              <button type="button" class="custom-preset-btn" data-preset="25">$25</button>
+              <button type="button" class="custom-preset-btn" data-preset="50">$50</button>
+              <button type="button" class="custom-preset-btn" data-preset="100">$100</button>
+              <button type="button" class="custom-preset-btn" data-preset="250">$250</button>
+            </div>
+          </div>
+          <div class="ticket-price-col custom-price-col">
+            <div class="custom-amount-input-container">
+              <span class="custom-currency-symbol">$</span>
+              <input
+                type="number"
+                id="custom-sponsor-amount"
+                class="custom-amount-field"
+                min="5"
+                max="25000"
+                step="1"
+                placeholder="50"
+                value="50"
+                aria-label="Custom sponsorship dollar amount"
+              >
+              <span class="custom-currency-code">USD</span>
+            </div>
+            <span class="availability-badge open-amount" id="badge-custom-sponsor">Open Amount</span>
+          </div>
+          <div class="qty-input-wrap">
+            <button class="qty-btn dec-qty" aria-label="Decrease custom sponsorship quantity"><i class="fa-solid fa-minus"></i></button>
+            <input class="qty-val" type="text" value="0" readonly aria-label="Custom sponsorship quantity">
+            <button class="qty-btn inc-qty" aria-label="Increase custom sponsorship quantity"><i class="fa-solid fa-plus"></i></button>
           </div>
         </div>
 
@@ -787,8 +966,8 @@
   <!-- Supabase Client JS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Environment Configuration -->
-  <script src="config.js?v=1.0.28"></script>
-  <script src="golf.js?v=1.0.28"></script>
+  <script src="config.js?v=1.0.30"></script>
+  <script src="golf.js?v=1.0.30"></script>
 </body>
 
 </html>

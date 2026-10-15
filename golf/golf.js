@@ -95,7 +95,16 @@ document.addEventListener("DOMContentLoaded", () => {
         actions.disable();
 
         const validateForm = () => {
-          if (regForm.checkValidity()) {
+          let customValid = true;
+          if (cart['custom-sponsor'] && cart['custom-sponsor'].qty > 0) {
+            customValid = cart['custom-sponsor'].price >= 5;
+          }
+          let hasItems = false;
+          Object.keys(cart).forEach(id => {
+            if (cart[id].qty > 0) hasItems = true;
+          });
+
+          if (regForm.checkValidity() && customValid && hasItems) {
             actions.enable();
           } else {
             actions.disable();
@@ -105,9 +114,21 @@ document.addEventListener("DOMContentLoaded", () => {
         regForm.addEventListener("input", validateForm);
         // Custom event triggered whenever players input subform updates
         document.addEventListener("playerFormUpdated", validateForm);
+        const customInputEl = document.getElementById("custom-sponsor-amount");
+        if (customInputEl) {
+          customInputEl.addEventListener("input", validateForm);
+        }
       },
 
       onClick: function () {
+        if (cart['custom-sponsor'] && cart['custom-sponsor'].qty > 0 && cart['custom-sponsor'].price < 5) {
+          const customInput = document.getElementById("custom-sponsor-amount");
+          if (customInput) {
+            customInput.focus();
+            customInput.reportValidity();
+          }
+          return;
+        }
         if (!regForm.checkValidity()) {
           regForm.reportValidity();
         }
@@ -118,6 +139,10 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.keys(cart).forEach(id => {
           total += cart[id].qty * cart[id].price;
         });
+
+        if (total <= 0) {
+          throw new Error("Please select an item or enter a valid sponsorship amount.");
+        }
 
         return actions.order.create({
           purchase_units: [{
@@ -231,15 +256,24 @@ document.addEventListener("DOMContentLoaded", () => {
     if (regErr) throw regErr;
 
     // 2. Insert items
-    const items = [];
+    const dbItems = [];
+    const emailItems = [];
     Object.keys(cart).forEach(id => {
       const item = cart[id];
       if (item.qty > 0) {
-        items.push({
+        dbItems.push({
           registration_id: regId,
           package_id: id,
           package_title: item.title,
           quantity: item.qty,
+          price_per_item: item.price
+        });
+        emailItems.push({
+          title: item.title,
+          package_title: item.title,
+          qty: item.qty,
+          quantity: item.qty,
+          price: item.price,
           price_per_item: item.price
         });
       }
@@ -247,14 +281,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const { error: itemsErr } = await supabase
       .from("golf_registration_items")
-      .insert(items);
+      .insert(dbItems);
 
     if (itemsErr) throw itemsErr;
 
     // 3. Insert players
     const playerCards = playersWrapper.querySelectorAll(".player-entry-card");
+    const players = [];
     if (playerCards.length > 0) {
-      const players = [];
       playerCards.forEach((card, idx) => {
         const name = card.querySelector(`input[name="player_${idx + 1}_name"]`).value;
         const email = card.querySelector(`input[name="player_${idx + 1}_email"]`).value;
@@ -284,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
           contactName: contactName,
           contactEmail: contactEmail,
           total: total,
-          items: items,
+          items: emailItems,
           players: players
         }
       });
@@ -301,7 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const id = row.getAttribute("data-id");
     const price = parseFloat(row.getAttribute("data-price"));
     const maxPlayersPerTicket = parseInt(row.getAttribute("data-players"));
-    const title = row.querySelector(".ticket-title").textContent;
+    const titleEl = row.querySelector(".ticket-title-text") || row.querySelector(".ticket-title");
+    const title = titleEl ? titleEl.textContent.trim() : "";
 
     const qtyValInput = row.querySelector(".qty-val");
     const decBtn = row.querySelector(".dec-qty");
@@ -315,10 +350,93 @@ document.addEventListener("DOMContentLoaded", () => {
       qty: 0
     };
 
+    // Custom Open-Ended Sponsor interactive handler
+    if (id === 'custom-sponsor') {
+      const customAmountInput = row.querySelector("#custom-sponsor-amount");
+      const presetBtns = row.querySelectorAll(".custom-preset-btn");
+
+      function syncCustomAmount(newAmount, autoSelectQty = true) {
+        const parsed = parseFloat(newAmount);
+        const validAmount = (!isNaN(parsed) && parsed > 0) ? parsed : 0;
+
+        if (validAmount >= 5) {
+          cart[id].price = validAmount;
+          row.setAttribute("data-price", validAmount.toFixed(2));
+          if (autoSelectQty && cart[id].qty === 0) {
+            cart[id].qty = 1;
+            qtyValInput.value = 1;
+          }
+        } else {
+          cart[id].price = validAmount;
+          row.setAttribute("data-price", (validAmount || 0).toFixed(2));
+          if (validAmount === 0 && cart[id].qty > 0) {
+            cart[id].qty = 0;
+            qtyValInput.value = 0;
+          }
+        }
+
+        // Highlight matching preset button
+        if (presetBtns) {
+          presetBtns.forEach(btn => {
+            const btnVal = parseFloat(btn.getAttribute("data-preset"));
+            if (cart[id].qty > 0 && Math.abs(btnVal - validAmount) < 0.01) {
+              btn.classList.add("active");
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+        }
+
+        if (cart[id].qty === 0) {
+          row.classList.remove("active");
+        } else {
+          row.classList.add("active");
+        }
+
+        updateCheckoutFlow();
+      }
+
+      if (customAmountInput) {
+        customAmountInput.addEventListener("input", (e) => {
+          syncCustomAmount(e.target.value, true);
+        });
+
+        customAmountInput.addEventListener("blur", (e) => {
+          const parsed = parseFloat(e.target.value);
+          if (isNaN(parsed) || parsed < 5) {
+            if (cart[id].qty > 0) {
+              e.target.value = "5";
+              syncCustomAmount(5, false);
+            }
+          } else {
+            e.target.value = parsed % 1 === 0 ? parsed.toFixed(0) : parsed.toFixed(2);
+            syncCustomAmount(parsed, false);
+          }
+        });
+      }
+
+      if (presetBtns) {
+        presetBtns.forEach(btn => {
+          btn.addEventListener("click", () => {
+            const presetVal = parseFloat(btn.getAttribute("data-preset"));
+            if (customAmountInput) {
+              customAmountInput.value = presetVal.toString();
+            }
+            syncCustomAmount(presetVal, true);
+          });
+        });
+      }
+    }
+
     decBtn.addEventListener("click", () => {
       if (cart[id].qty > 0) {
         cart[id].qty--;
         qtyValInput.value = cart[id].qty;
+        if (id === 'custom-sponsor' && cart[id].qty === 0) {
+          row.classList.remove("active");
+          const presetBtns = row.querySelectorAll(".custom-preset-btn");
+          if (presetBtns) presetBtns.forEach(b => b.classList.remove("active"));
+        }
         updateCheckoutFlow();
       }
     });
@@ -326,6 +444,34 @@ document.addEventListener("DOMContentLoaded", () => {
     incBtn.addEventListener("click", () => {
       if (new Date() > REGISTRATION_DEADLINE) return;
       if (PLAYER_SPOTS_SOLD_OUT && cart[id].playersPerTicket > 0 && id !== 'longest-drive') return;
+
+      if (id === 'custom-sponsor') {
+        const customAmountInput = row.querySelector("#custom-sponsor-amount");
+        let amount = parseFloat(customAmountInput ? customAmountInput.value : "0") || 0;
+        if (amount < 5) {
+          amount = 50;
+          if (customAmountInput) customAmountInput.value = "50";
+        }
+        cart[id].price = amount;
+        row.setAttribute("data-price", amount.toFixed(2));
+        if (cart[id].qty < 10) {
+          cart[id].qty++;
+          qtyValInput.value = cart[id].qty;
+          row.classList.add("active");
+          const presetBtns = row.querySelectorAll(".custom-preset-btn");
+          if (presetBtns) {
+            presetBtns.forEach(b => {
+              if (Math.abs(parseFloat(b.getAttribute("data-preset")) - amount) < 0.01) {
+                b.classList.add("active");
+              } else {
+                b.classList.remove("active");
+              }
+            });
+          }
+          updateCheckoutFlow();
+        }
+        return;
+      }
 
       const holesRequired = cart[id].holesRequired;
       const localInventory = calculateLocalRemainingInventory();
@@ -475,8 +621,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Items with no hole requirement
         if (badge) {
           badge.style.display = 'inline-block';
-          badge.textContent = 'Unlimited';
-          badge.className = 'availability-badge unlimited';
+          if (id === 'custom-sponsor') {
+            badge.textContent = 'Open Amount';
+            badge.className = 'availability-badge open-amount';
+          } else {
+            badge.textContent = 'Unlimited';
+            badge.className = 'availability-badge unlimited';
+          }
         }
         incBtn.disabled = false;
         incBtn.style.opacity = '1';
@@ -631,6 +782,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".qty-val").forEach(input => {
       input.value = "0";
     });
+
+    const customInput = document.getElementById("custom-sponsor-amount");
+    if (customInput) {
+      customInput.value = "50";
+    }
+    const customRow = document.querySelector('.ticket-item-row[data-id="custom-sponsor"]');
+    if (customRow) {
+      customRow.classList.remove("active");
+      const presetBtns = customRow.querySelectorAll(".custom-preset-btn");
+      if (presetBtns) presetBtns.forEach(btn => btn.classList.remove("active"));
+    }
 
     updateCheckoutFlow();
     renderPayPalButtons(); // Reset button callbacks

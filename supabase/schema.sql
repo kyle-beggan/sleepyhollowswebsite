@@ -134,7 +134,7 @@ CREATE OR REPLACE VIEW public.public_golf_sponsors AS
 SELECT r.contact_name AS sponsor_name, i.package_title, r.created_at
 FROM public.golf_registrations r
 JOIN public.golf_registration_items i ON r.id = i.registration_id
-WHERE i.package_id IN ('diamond-record', 'platinum-record', 'gold-record', 'hole-sponsor', 'longest-drive', 'closest-to-pin');
+WHERE i.package_id IN ('diamond-record', 'platinum-record', 'gold-record', 'hole-sponsor', 'longest-drive', 'closest-to-pin', 'custom-sponsor');
 
 GRANT SELECT ON public.public_golf_sponsors TO anon;
 GRANT SELECT ON public.public_golf_sponsors TO authenticated;
