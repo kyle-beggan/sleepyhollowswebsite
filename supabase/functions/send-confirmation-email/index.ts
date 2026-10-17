@@ -50,11 +50,11 @@ Deno.serve(async (req: Request) => {
     let playersHtml = '';
     if (players && Array.isArray(players) && players.length > 0) {
       let playersList = players.map((p: any) => {
-         const name = p.first_name + ' ' + p.last_name;
-         const hc = p.handicap ? ` (Handicap: ${p.handicap})` : '';
-         return `<li style="padding: 5px 0;"><strong>${name}</strong>${hc}</li>`;
+        const name = p.first_name + ' ' + p.last_name;
+        const hc = p.handicap ? ` (Handicap: ${p.handicap})` : '';
+        return `<li style="padding: 5px 0;"><strong>${name}</strong>${hc}</li>`;
       }).join('');
-      
+
       playersHtml = `
         <h3 style="border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 30px;">Registered Golfers</h3>
         <ul style="list-style-type: none; padding-left: 0;">
