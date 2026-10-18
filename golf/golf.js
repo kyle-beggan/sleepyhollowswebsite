@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const regForm = document.getElementById("registration-form");
 
   // Registration deadline & player availability
-  const REGISTRATION_DEADLINE = new Date("2026-10-15T23:59:59-04:00"); // October 15 at midnight Eastern Time
+  const REGISTRATION_DEADLINE = new Date("2026-10-28T23:59:59-04:00"); // October 28 at 11:59 PM Eastern Time
   const PLAYER_SPOTS_SOLD_OUT = true; // All tournament golfer spots are sold out
 
   // Modal Elements
