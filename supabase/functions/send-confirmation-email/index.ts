@@ -72,7 +72,7 @@ Deno.serve(async (req: Request) => {
         <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
           <h3 style="margin-top: 0; color: #555;">Event Details</h3>
           <p><strong>Date:</strong> Thursday, October 29, 2026<br>
-          <strong>Time:</strong> 9:00 AM Shotgun Start<br>
+          <strong>Time:</strong> 9AM Registration, 10AM Shotgun Start<br>
           <strong>Location:</strong> Herndon Centennial Golf Course, Herndon, VA</p>
         </div>
 
